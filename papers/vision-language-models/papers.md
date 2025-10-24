@@ -2,7 +2,7 @@
 
 ## 2026
 
-### [A Neurosymbolic Agent System for Compositional Visual Reasoning](https://arxiv.org/pdf/3198_A_Neurosymbolic_Agent_Sys.pdf)
+### [A Neurosymbolic Agent System for Compositional Visual Reasoning](https://openreview.net/pdf?id=ZSal26DrNb)
 
 * **Year:** 2026
 * **Conference/Venue:** Under review at the International Conference on Learning Representations (ICLR 2026)
@@ -13,14 +13,6 @@
 ---
 
 ## 2025
-
-### [Evaluating Morphological Compositional Generalization in Large Language Models](https://aclanthology.org/2025.naacl-long.59.pdf)
-
-* **Year:** 2025
-* **Conference/Venue:** NAACL 2025 (Long Papers)
-* **Institutions:** EPFL; Idiap; Duke; Brandeis; LMU Munich; University of Cambridge; Johns Hopkins; Università della Svizzera Italiana; NYU
-* **Abstract:** Defines morphemes as compositional primitives; evaluates productivity and systematicity on Turkish/Finnish. LLMs lag far behind human morphological compositionality, especially with novel roots and longer affix chains.
-* **Keywords:** morphology, compositional generalization, productivity, systematicity, agglutinative languages.
 
 ### [Compositional Entailment Learning for Hyperbolic Vision-Language Models](https://arxiv.org/pdf/2410.06912.pdf)
 
@@ -98,21 +90,12 @@
 
 ## 2024
 
-### [The Hard Positive Truth About Vision-Language Compositionality](#)
-
-* **Year:** 2024
-* **Conference/Venue:** European Conference on Computer Vision (**ECCV 2024**)
-* **Institutions:** —
-* **Abstract:** Studies **hard positive** cases in VL compositionality, analyzing why models fail on subtle, semantically correct positive pairs and how improving positive difficulty impacts compositional robustness.
-* **Keywords:** hard positives, compositionality, robustness, VL evaluation.
-
-### [Sequential Compositional Generalization in Multimodal Models](#)
-
-* **Year:** 2024
-* **Conference/Venue:** Conference of the North American Chapter of the Association for Computational Linguistics (**NAACL 2024**)
-* **Institutions:** —
-* **Abstract:** Examines **sequential** (stepwise) composition in multimodal models and proposes evaluation/training setups where capabilities must be integrated in order, revealing gaps and mitigation strategies.
-* **Keywords:** sequential composition, multimodal reasoning, evaluation.
+### [The Hard Positive Truth About Vision-Language Compositionality](https://arxiv.org/pdf/2409.17958)
+- **Year:** 2024  
+- **Conference/Venue:** European Conference on Computer Vision (**ECCV 2024**)  
+- **Institutions:** University of Oxford; University of Edinburgh; University College London  
+- **Abstract:** Revisits compositional evaluation in vision-language models (VLMs) and uncovers a systematic bias in widely used benchmarks caused by **hard positive pairs**—semantically correct but compositionally challenging samples. The authors demonstrate that models like CLIP and BLIP underperform on these cases even when easy negatives are well distinguished. They propose **Hard Positive Compositionality (HPC)**, a new evaluation protocol and curated dataset that isolates this difficulty. Results show HPC reveals performance drops of 15–30% masked by standard metrics, emphasizing the need for balanced positive sampling to assess true compositional understanding.  
+- **Keywords:** compositional generalization, vision-language models, hard positives, evaluation bias, CLIP, BLIP, compositional benchmarking.
 
 ### [In-Context Compositional Generalization for Large Vision-Language Models](https://aclanthology.org/2024.emnlp-main.996.pdf)
 

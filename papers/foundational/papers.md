@@ -2,7 +2,7 @@
 
 ## 2025
 
-### [Compositional Generalization via Forced Rendering of Disentangled Latents](https://arxiv.org/abs/2501.18797)
+### [Compositional Generalization via Forced Rendering of Disentangled Latents](https://arxiv.org/pdf/2501.18797)
 - **Year:** 2025  
 - **Conference/Venue:** ICML 2025 (PMLR 267)  
 - **Abstract:** Shows that having disentangled latents alone doesn’t guarantee systematic generalization: standard decoders “re-entangle” later layers and rely on superposition/memorization. Forcing latents to render directly into the output representational (pixel) space—via architectural constraints, regularization, or curated data—yields data-efficient OOD composition on a controlled 2D “bump” task and analysis via kernels/manifold geometry. :contentReference[oaicite:0]{index=0}  
@@ -14,7 +14,7 @@
 - **Abstract:** In controlled vision setups, **diversity** (concept values and combination coverage) — not raw scale — drives compositional generalization. High combinatorial coverage induces **linearly factored** representations that enable perfect generalization from few combinations; pretrained DINO/CLIP show partial but imperfect structure. :contentReference[oaicite:1]{index=1}  
 - **Keywords:** data diversity, coverage, linearly factored reps, scaling laws, vision compositionality.
 
-### [The Coverage Principle: A Framework for Understanding Compositional Generalization](https://arxiv.org/abs/2505.20278)
+### [The Coverage Principle: A Framework for Understanding Compositional Generalization](https://arxiv.org/pdf/2505.20278)
 - **Year:** 2025  
 - **Conference/Venue:** arXiv preprint  
 - **Abstract:** Proposes **coverage** as a necessary data-centric condition for pattern-matching models (e.g., Transformers) to generalize compositionally: reliable predictions extend only to inputs reachable by substituting **functionally equivalent** fragments observed in training. Predicts (and confirms) quadratic data growth for two-hop tasks, limits with path ambiguity, and partial gains from CoT; offers a taxonomy of mechanism types (structure-/property-/shared-operator-based). :contentReference[oaicite:2]{index=2}  
@@ -28,7 +28,7 @@
 
 ## 2024
 
-### [Neuron Activation Coverage: Rethinking Out-of-Distribution Detection and Generalization](https://arxiv.org/abs/2306.02879)
+### [Neuron Activation Coverage: Rethinking Out-of-Distribution Detection and Generalization](https://arxiv.org/pdf/2306.02879)
 - **Year:** 2024  
 - **Conference/Venue:** ICLR 2024  
 - **Abstract:** Defines **Neuron Activation Coverage (NAC)**—a coverage measure over neuron states (combining output and decision influence)—and shows (i) strong OOD detection (SOTA across CIFAR-10/100, ImageNet) and (ii) positive correlation between NAC and generalization, enabling robust model selection beyond standard InD validation. :contentReference[oaicite:4]{index=4}  
@@ -48,7 +48,7 @@
 - **Abstract:** Treats compositionality as a **property of the data-generating process**. Derives **mild support/architecture** conditions under which models generalize to unseen compositions; validates on synthetic visual setups and relates to identifiable representation learning. :contentReference[oaicite:6]{index=6}  
 - **Keywords:** data-generating processes, sufficient conditions, identifiable reps, theory + synthetic validation.
 
-### [A Survey on Compositional Generalization in Applications](https://arxiv.org/abs/2302.01067)
+### [A Survey on Compositional Generalization in Applications](https://arxiv.org/pdf/2302.01067)
 - **Year:** 2023  
 - **Conference/Venue:** arXiv preprint  
 - **Abstract:** Reviews application-driven settings for compositional generalization, proposing a taxonomy across domains (healthcare, finance, RL, unsupervised/supervised/interactive learning) and trends linking disentanglement/emergent language to practical CG challenges. :contentReference[oaicite:7]{index=7}  
@@ -56,7 +56,7 @@
 
 ## 2020
 
-### [Measuring Compositional Generalization: A Comprehensive Method on Realistic Data](https://arxiv.org/abs/1912.09713)
+### [Measuring Compositional Generalization: A Comprehensive Method on Realistic Data](https://arxiv.org/pdf/1912.09713)
 - **Year:** 2020  
 - **Conference/Venue:** ICLR 2020  
 - **Abstract:** Introduces **DBCA** to construct and assess splits with **similar atom** but **different compound** distributions, and releases **CFQ** (Compositional Freebase Questions). Finds strong **negative correlation** between compound divergence and accuracy across architectures; also builds SCAN splits with DBCA. :contentReference[oaicite:8]{index=8}  
