@@ -11,17 +11,14 @@
 * **Keywords:** training dynamics, phase transitions, chaos effect, cone effect, stability, interpretability, learning process.
 
 ### [Swing-by Dynamics in Concept Learning and Compositional Generalization](https://arxiv.org/pdf/2410.08309)
-- **Year:** 2025  
-- **Conference/Venue:** International Conference on Learning Representations (**ICLR 2025**)  
-- **Institutions:** Harvard University (CBS-NTT Physics of Intelligence Program), NTT Research, University of Michigan  
-- **Authors:** Yongyi Yang, Core Francisco Park, Ekdeep Singh Lubana, Maya Okawa, Wei Hu, Hidenori Tanaka  
-- **Abstract:**  
-  This paper introduces a theoretical and empirical framework to explain **compositional generalization** and emergent structure learning in generative models. Building on empirical findings from text-conditioned diffusion models, the authors define a simplified abstraction—the **Structured Identity Mapping (SIM)** task—where a network learns identity mappings over a Gaussian mixture with structured centroids representing “concepts.” The SIM task captures key empirical phenomena observed in multimodal models, including sequential learning of concepts and sensitivity to data structure.  
 
-  The paper discovers **Swing-by Dynamics**, a new mechanism underlying **non-monotonic learning curves** and multiple-descent behaviors in out-of-distribution (OOD) generalization. Analytical results on deep linear models (MLPs and symmetric 2-layer networks) reveal alternating stages of growth and suppression in the model Jacobian, corresponding to transient memorization and recovery phases—mirroring behavior in diffusion models.  
-
-  Empirical experiments with diffusion models confirm these theoretical predictions: models exhibit sequential concept learning, double-descent-like OOD loss curves, and exponential slowing in learning speed. Together, these results connect the **geometry of compositional data**, **training dynamics**, and **emergent generalization** in modern generative systems.  
-- **Keywords:** compositional generalization, concept learning, diffusion models, swing-by dynamics, multiple descent, learning dynamics, deep linear networks, representation geometry.
+* **Year:** 2025  
+* **Conference/Venue:** International Conference on Learning Representations (**ICLR 2025**)  
+* **Institutions:** Harvard University (CBS-NTT Physics of Intelligence Program), NTT Research, University of Michigan  
+* **Authors:** Yongyi Yang, Core Francisco Park, Ekdeep Singh Lubana, Maya Okawa, Wei Hu, Hidenori Tanaka  
+* **Abstract:**  
+  This paper introduces a theoretical and empirical framework to explain **compositional generalization** and emergent structure learning in generative models. Building on empirical findings from text-conditioned diffusion models, the authors define a simplified abstraction—the **Structured Identity Mapping (SIM)** task—where a network learns identity mappings over a Gaussian mixture with structured centroids representing “concepts.” The SIM task captures key empirical phenomena observed in multimodal models, including sequential learning of concepts and sensitivity to data structure. The paper discovers **Swing-by Dynamics**, a new mechanism underlying **non-monotonic learning curves** and multiple-descent behaviors in out-of-distribution (OOD) generalization. Analytical results on deep linear models (MLPs and symmetric 2-layer networks) reveal alternating stages of growth and suppression in the model Jacobian, corresponding to transient memorization and recovery phases—mirroring behavior in diffusion models. Empirical experiments with diffusion models confirm these theoretical predictions: models exhibit sequential concept learning, double-descent-like OOD loss curves, and exponential slowing in learning speed. Together, these results connect the **geometry of compositional data**, **training dynamics**, and **emergent generalization** in modern generative systems.  
+* **Keywords:** compositional generalization, concept learning, diffusion models, swing-by dynamics, multiple descent, learning dynamics, deep linear networks, representation geometry.
 
 ## 2024
 
@@ -42,6 +39,7 @@
 * **Keywords:** grokking, in-context learning, modular arithmetic, emergent reasoning, phase transition, representational geometry.
 
 ### [Grokking as the Transition from Lazy to Rich Training Dynamics](https://arxiv.org/pdf/2310.06110)
+
 - **Year:** 2024  
 - **Conference/Venue:** International Conference on Learning Representations (**ICLR 2024**)  
 - **Institutions:** Harvard University; Kempner Institute for the Study of Natural and Artificial Intelligence  
@@ -55,6 +53,7 @@
 - **Keywords:** grokking, lazy training, feature learning, neural tangent kernel (NTK), centered kernel alignment (CKA), generalization dynamics, polynomial regression, scaling laws.
 
 ### [Grokking as a First-Order Phase Transition in Two-Layer Networks](https://arxiv.org/pdf/2310.03789)
+
 - **Year:** 2024  
 - **Conference/Venue:** International Conference on Learning Representations (**ICLR 2024**)  
 - **Institutions:** Racah Institute of Physics, Hebrew University of Jerusalem; Tel Aviv University  
@@ -64,6 +63,7 @@
 ## 2023
 
 ### [Progress Measures for Grokking via Mechanistic Interpretability](https://openreview.net/pdf?id=9XFSbDPmdW)
+
 * **Year:** 2023  
 * **Conference/Venue:** International Conference on Learning Representations (**ICLR 2023**)  
 * **Institutions:** Independent researchers; University of California, Berkeley  
