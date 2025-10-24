@@ -11,6 +11,13 @@
 
 ## 2024
 
+### [In-Context Compositional Generalization for Large Vision-Language Models](https://aclanthology.org/2024.emnlp-main.996.pdf)
+- **Year:** 2024  
+- **Conference/Venue:** Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing (EMNLP 2024)  
+- **Institutions:** Beijing Institute of Technology; Shenzhen MSU-BIT University; Zhejiang University  
+- **Abstract:** Investigates **in-context compositional generalization (ICCG)** for large vision-language models (LVLMs), identifying a key obstacle: redundant visual information that distorts multimodal similarity and degrades contextual reasoning. The authors propose a **demonstration selection method** based on *diversity–coverage* principles that jointly considers content and structure from a multimodal perspective. Using a new **GQA-ICCG** benchmark derived from GQA, they show consistent accuracy gains across OpenFlamingo, Otter, FROMAGe, and IDEFICS models.  
+- **Keywords:** compositional generalization, in-context learning, vision-language models, redundancy reduction, demonstration selection, multimodal reasoning, GQA-ICCG dataset.  
+
 ### [Rule Extrapolation in Language Models: A Study of Compositional Generalization on OOD Prompts](https://arxiv.org/pdf/2409.13728)
 - **Year:** 2024  
 - **Conference/Venue:** 38th Conference on Neural Information Processing Systems (NeurIPS 2024)  
@@ -33,6 +40,13 @@
 - **Keywords:** skills-in-context, in-context learning, compositional generalization, systematic generalization, prompting, fine-tuning, weak-to-strong generalization.  
 
 ## 2023
+
+### [Compositional Exemplars for In-context Learning](https://arxiv.org/pdf/2302.05698)
+- **Year:** 2023  
+- **Conference/Venue:** Proceedings of the 40th International Conference on Machine Learning (ICML 2023)  
+- **Institutions:** The University of Hong Kong; Shanghai Artificial Intelligence Laboratory  
+- **Abstract:** Introduces **CEIL (Compositional Exemplars for In-context Learning)**, a determinantal point process–based approach that models interactions among in-context examples rather than selecting them independently. By optimizing a contrastive objective with LM feedback, CEIL selects diverse yet relevant examples that improve generalization across 12 NLP datasets spanning classification, commonsense reasoning, code generation, and semantic parsing. Results show state-of-the-art performance and compositional transferability across datasets and LMs.  
+- **Keywords:** in-context learning, exemplar selection, compositional generalization, determinantal point processes, diversity, transferability, retrieval learning.  
 
 ### [How Do In-Context Examples Affect Compositional Generalization?](https://aclanthology.org/2023.acl-long.618.pdf)
 - **Year:** 2023  
