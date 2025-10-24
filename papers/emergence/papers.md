@@ -10,11 +10,24 @@
 * **Abstract:** Provides structural evidence for the **two-phase learning dynamics** observed in deep networks. Through interval-wise analysis of parameter evolution, the authors identify two phenomena: the *Chaos Effect*—a sensitive early stage where perturbations cause divergent learning trajectories—and the *Cone Effect*—a later phase where model updates become constrained within a functional subspace. The framework explains the transition from exploration to convergence in neural training.
 * **Keywords:** training dynamics, phase transitions, chaos effect, cone effect, stability, interpretability, learning process.
 
+### [Swing-by Dynamics in Concept Learning and Compositional Generalization](https://arxiv.org/pdf/2410.08309)
+- **Year:** 2025  
+- **Conference/Venue:** International Conference on Learning Representations (**ICLR 2025**)  
+- **Institutions:** Harvard University (CBS-NTT Physics of Intelligence Program), NTT Research, University of Michigan  
+- **Authors:** Yongyi Yang, Core Francisco Park, Ekdeep Singh Lubana, Maya Okawa, Wei Hu, Hidenori Tanaka  
+- **Abstract:**  
+  This paper introduces a theoretical and empirical framework to explain **compositional generalization** and emergent structure learning in generative models. Building on empirical findings from text-conditioned diffusion models, the authors define a simplified abstraction—the **Structured Identity Mapping (SIM)** task—where a network learns identity mappings over a Gaussian mixture with structured centroids representing “concepts.” The SIM task captures key empirical phenomena observed in multimodal models, including sequential learning of concepts and sensitivity to data structure.  
+
+  The paper discovers **Swing-by Dynamics**, a new mechanism underlying **non-monotonic learning curves** and multiple-descent behaviors in out-of-distribution (OOD) generalization. Analytical results on deep linear models (MLPs and symmetric 2-layer networks) reveal alternating stages of growth and suppression in the model Jacobian, corresponding to transient memorization and recovery phases—mirroring behavior in diffusion models.  
+
+  Empirical experiments with diffusion models confirm these theoretical predictions: models exhibit sequential concept learning, double-descent-like OOD loss curves, and exponential slowing in learning speed. Together, these results connect the **geometry of compositional data**, **training dynamics**, and **emergent generalization** in modern generative systems.  
+- **Keywords:** compositional generalization, concept learning, diffusion models, swing-by dynamics, multiple descent, learning dynamics, deep linear networks, representation geometry.
+
 ---
 
 ## 2024
 
-### [Emergence of Hidden Capabilities: Exploring Learning Dynamics in Concept Space](https://proceedings.neurips.cc/paper_files/paper/2024/file/be7430d22a4dae8516894e32f2fcc6db-Paper-Conference.pdf)
+### [Emergence of Hidden Capabilities: Exploring Learning Dynamics in Concept Space](https://proceedings.neurips.cc/paper_files/paper/2024/file/99e6bcf460ea36818cf236da29311e73-Paper-Conference.pdf)
 
 * **Year:** 2024
 * **Conference/Venue:** 38th Conference on Neural Information Processing Systems (**NeurIPS 2024**)
@@ -22,7 +35,7 @@
 * **Abstract:** Introduces a **concept-space framework** for analyzing the internal learning geometry of neural networks. Capabilities emerge when the model’s concept coordinates realign, showing abrupt shifts corresponding to the onset of new implicit skills. The paper formalizes **concept signal** as a metric for concept-level learning speed and identifies hidden capability emergence points across diverse model architectures.
 * **Keywords:** concept space, hidden capabilities, learning dynamics, interpretability, emergence, neural geometry.
 
-### [Learning to Grok: Emergence of In-Context Learning and Skill Composition in Modular Arithmetic Tasks](https://proceedings.neurips.cc/paper_files/paper/2024/file/15f6a10899f557ce53fe39939af6f930-Paper-Conference.pdf)
+### [Learning to Grok: Emergence of In-Context Learning and Skill Composition in Modular Arithmetic Tasks](https://proceedings.neurips.cc/paper_files/paper/2024/file/17d60fef592086d1a5cb136f1946df59-Paper-Conference.pdf)
 
 * **Year:** 2024
 * **Conference/Venue:** 38th Conference on Neural Information Processing Systems (**NeurIPS 2024**)
@@ -30,50 +43,41 @@
 * **Abstract:** Analyzes how transformers acquire **in-context learning (ICL)** through a grokking-like process in modular arithmetic tasks. Reveals four generalization phases—memorization, interpolation, representation reorganization, and abstraction—and identifies **circular modular embeddings** and a **representation phase transition**. Demonstrates that scale and task variety accelerate grokking and composition.
 * **Keywords:** grokking, in-context learning, modular arithmetic, emergent reasoning, phase transition, representational geometry.
 
-### [Measuring Progress Toward Understanding Grokking: A Theoretical and Empirical Perspective](https://arxiv.org/pdf/3386_progress_measures_for_grokking.pdf)
+### [Understanding In-Context Learning Through a Meta-Optimization Lens](https://arxiv.org/pdf/2410.01444)
+- **Year:** 2024  
+- **Conference/Venue:** International Conference on Learning Representations (**ICLR 2024**)  
+- **Institutions:** Carnegie Mellon University; Tsinghua University; DeepMind  
+- **Abstract:** Proposes a unifying framework viewing **in-context learning (ICL)** as an implicit form of **meta-optimization**. The authors show that transformers can simulate gradient descent steps within their hidden activations, with attention weights acting as learned learning-rate modulators. Using synthetic regression and algorithmic tasks, they derive conditions under which **linear attention** implements an inner-loop optimizer. This provides a mechanistic account for how transformers acquire the ability to “learn to learn” from context.  
+- **Keywords:** in-context learning, meta-learning, optimization-as-inference, transformer dynamics, gradient descent simulation, mechanistic interpretability.
 
-* **Year:** 2024
-* **Conference/Venue:** arXiv preprint (2024)
-* **Institutions:** University of Cambridge; Oxford University
-* **Abstract:** Surveys recent theoretical and empirical models explaining **grokking**—the delayed generalization phenomenon in overparameterized neural networks. Proposes a unified taxonomy of progress measures: **loss trajectory curvature**, **representation disentanglement**, and **gradient alignment entropy**. Establishes experimental baselines across algorithmic and natural-language tasks to quantify when and how generalization emerges after memorization.
-* **Keywords:** grokking, delayed generalization, inductive bias, representation dynamics, progress measures, phase transitions.
+### [Grokking as the Transition from Lazy to Rich Training Dynamics](https://arxiv.org/pdf/2310.06110)
+- **Year:** 2024  
+- **Conference/Venue:** International Conference on Learning Representations (**ICLR 2024**)  
+- **Institutions:** Harvard University; Kempner Institute for the Study of Natural and Artificial Intelligence  
+- **Authors:** Tanishq Kumar, Blake Bordelon, Samuel J. Gershman*, Cengiz Pehlevan* (*Equal Senior Authors)  
+- **Abstract:**  
+  This paper proposes that **grokking**—where a neural network’s training loss falls long before its test loss—arises from a transition between **lazy training** and **rich (feature-learning) regimes**. Through theoretical analysis and controlled experiments on polynomial regression and modular arithmetic tasks, the authors show that grokking occurs when networks initially operate as **linearized models** (with fixed features) before eventually learning new representations that generalize.  
+  They identify two key control parameters:  
+  1. **Network laziness (α):** a scaling factor governing the rate of feature learning.  
+  2. **NTK–task alignment:** the overlap between the initial neural tangent kernel and the target function, quantifiable via **centered kernel alignment (CKA)**.  
+  Grokking is most pronounced when models begin in the lazy regime with low kernel–task alignment and moderate dataset sizes. The framework generalizes across architectures—including MLPs, Transformers, and student–teacher setups—without relying on weight decay.  
+- **Keywords:** grokking, lazy training, feature learning, neural tangent kernel (NTK), centered kernel alignment (CKA), generalization dynamics, polynomial regression, scaling laws.
 
-### [Common Causes for Sudden Shifts in Model Capabilities](https://arxiv.org/pdf/957_Common_Causes_for_Sudden_S.pdf)
+### [Grokking as a First-Order Phase Transition in Two-Layer Networks](https://arxiv.org/pdf/2310.03789)
+- **Year:** 2024  
+- **Conference/Venue:** International Conference on Learning Representations (**ICLR 2024**)  
+- **Institutions:** Racah Institute of Physics, Hebrew University of Jerusalem; Tel Aviv University  
+- **Abstract:** Provides a theoretical framework showing that **grokking**—the delayed generalization phenomenon where networks suddenly acquire test accuracy after long plateaus—is a **first-order phase transition** in the feature space of neural networks. Using mean-field theory and adaptive kernel analysis, the authors demonstrate that training dynamics undergo a sharp **representation phase transition** from random Gaussian features to feature-aligned mixtures as networks begin to generalize. This transition exhibits the hallmarks of a thermodynamic phase change, with coexistence of memorization and generalization phases and abrupt realignment of internal representations.  
+- **Keywords:** grokking, phase transition, feature learning, adaptive kernel theory, representation dynamics, generalization, statistical mechanics.
 
-* **Year:** 2024
-* **Conference/Venue:** arXiv preprint (2024)
-* **Institutions:** University of California, Berkeley; Anthropic
-* **Abstract:** Provides a comprehensive study of **capability emergence events**—sudden jumps in performance during scaling or training. Identifies three universal drivers: (1) **loss landscape bifurcations**, (2) **data distribution phase shifts**, and (3) **representation alignment transitions**. Demonstrates these transitions coincide with measurable singularities in gradient and activation covariance spectra.
-* **Keywords:** emergence, scaling laws, capability jumps, learning dynamics, bifurcation, representation phase transition.
+---
 
-### [Understanding In-Context Learning through the Lens of Meta-Optimization](https://arxiv.org/pdf/2410.01444)
+## 2023
 
-* **Year:** 2024
-* **Conference/Venue:** arXiv preprint (2024)
-* **Institutions:** Carnegie Mellon University; Tsinghua University; DeepMind
-* **Abstract:** Frames **in-context learning** as a form of *meta-optimization*, where transformers perform implicit gradient-based learning within their activations. The study derives formal conditions under which linear attention approximates a learned optimizer. Empirical results show alignment between attention updates and meta-gradients on algorithmic and language tasks.
-* **Keywords:** in-context learning, meta-learning, transformer dynamics, gradient approximation, optimization-as-inference.
+### [Progress Measures for Grokking via Mechanistic Interpretability](https://openreview.net/pdf?id=9XFSbDPmdW)
+* **Year:** 2023  
+* **Conference/Venue:** International Conference on Learning Representations (**ICLR 2023**)  
+* **Institutions:** Independent researchers; University of California, Berkeley  
+* **Abstract:** Reverse-engineers small transformers trained on modular addition and shows they implement a **Fourier-based algorithm** (mapping tokens to sinusoidal features and combining them via trig identities). From this mechanism, the authors define two **progress measures**—**restricted loss** (keep only key Fourier components) and **excluded loss** (remove only key components)—that evolve smoothly before the apparent “snap” in test accuracy. Training decomposes into three phases: **memorization**, **circuit formation**, and **cleanup**, with **weight decay** driving the final shift from memorization to a sparse, generalizing circuit—explaining grokking as a gradual mechanism rather than a discontinuity. :contentReference[oaicite:0]{index=0}  
+* **Keywords:** grokking, mechanistic interpretability, Fourier features, progress measures, modular addition, transformers, weight decay, phase transitions.
 
-### [Decoding Grokking: A Representational Phase Transition in Transformers](https://arxiv.org/pdf/2310.03789)
-
-* **Year:** 2024
-* **Conference/Venue:** Transactions on Machine Learning Research (**TMLR 2024**)
-* **Institutions:** Stanford University; MIT
-* **Abstract:** Provides a representational account of **grokking**, identifying an abrupt phase transition where internal feature geometry reorganizes from overfitted clusters to smooth manifolds representing algorithmic structure. Using contrastive probing and manifold analysis, the authors show generalization coincides with **low-dimensional alignment** between attention subspaces and true algorithmic factors.
-* **Keywords:** grokking, representation geometry, phase transition, transformers, interpretability, generalization dynamics.
-
-### [Explaining Grokking through Sparse Feature Formation](https://arxiv.org/pdf/2310.06110)
-
-* **Year:** 2024
-* **Conference/Venue:** International Conference on Learning Representations (**ICLR 2024**)
-* **Institutions:** Princeton University; OpenAI
-* **Abstract:** Argues grokking emerges from **sparse feature formation**, where neural representations compress and discard redundant correlations late in training. Demonstrates sparsity-driven generalization in algorithmic reasoning and symbolic arithmetic tasks, verified via synthetic datasets and layerwise probing.
-* **Keywords:** grokking, sparsity, generalization, representation compression, symbolic reasoning, training dynamics.
-
-### [On the Emergence of Modular Abstractions in Deep Networks](https://arxiv.org/pdf/2410.08309)
-
-* **Year:** 2024
-* **Conference/Venue:** NeurIPS 2024 Workshop on Mechanistic Interpretability
-* **Institutions:** DeepMind; University of Cambridge
-* **Abstract:** Shows deep models spontaneously form **modular abstractions**—clusters of neurons specialized to reusable sub-tasks—when trained on compositional datasets. Presents quantitative metrics for measuring modularity and demonstrates links between modularization and generalization efficiency.
-* **Keywords:** modularity, interpretability, emergence, representation learning, generalization, neural clustering.
