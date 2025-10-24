@@ -9,6 +9,13 @@
 - **Abstract:** Introduces **Ordered CommonGen**, a benchmark assessing both instruction following and compositionality by requiring concept order adherence. Across 36 LLMs, models often bias toward particular order patterns, reducing diversity; even the best model attains ~75% ordered coverage, indicating room to improve both abilities.  
 - **Keywords:** instruction following, compositional generalization, Ordered CommonGen, concept order, ordered coverage, commonsense reasoning, LLM benchmarking.  
 
+### [Evaluating Morphological Compositional Generalization in Large Language Models](https://aclanthology.org/2025.naacl-long.59.pdf)
+- **Year:** 2025  
+- **Conference/Venue:** Proceedings of the 2025 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL 2025), Volume 1: Long Papers  
+- **Institutions:** EPFL; Idiap Research Institute; Duke University; Brandeis University; LMU Munich; University of Cambridge; Johns Hopkins University; Università della Svizzera Italiana; New York University :contentReference[oaicite:0]{index=0}  
+- **Abstract:** Defines morphemes as **compositional primitives** and introduces generative (productivity) and discriminative (systematicity) tasks to probe morphological generalization. Focusing on **Turkish** and **Finnish**, the study evaluates instruction-tuned multilingual LLMs (e.g., GPT-4, Gemini, Aya, Qwen). Models struggle especially on **novel roots** and as **morphological complexity** increases: productivity accuracy drops toward zero with longer affix chains, and systematicity shows large gaps in a stringent **coherence** metric compared to humans, despite above-chance performance on individual combinations. Overall, LLMs lag far behind human **morphological compositionality** in agglutinative languages. :contentReference[oaicite:1]{index=1}  
+- **Keywords:** morphology, compositional generalization, productivity, systematicity, agglutinative languages, Turkish, Finnish, LLM evaluation, coherence metric, nonce/Wug testing.
+
 ## 2024
 
 ### [In-Context Compositional Generalization for Large Vision-Language Models](https://aclanthology.org/2024.emnlp-main.996.pdf)
