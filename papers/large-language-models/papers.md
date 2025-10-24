@@ -18,13 +18,6 @@
 
 ## 2024
 
-### [In-Context Compositional Generalization for Large Vision-Language Models](https://aclanthology.org/2024.emnlp-main.996.pdf)
-- **Year:** 2024  
-- **Conference/Venue:** Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing (EMNLP 2024)  
-- **Institutions:** Beijing Institute of Technology; Shenzhen MSU-BIT University; Zhejiang University  
-- **Abstract:** Investigates **in-context compositional generalization (ICCG)** for large vision-language models (LVLMs), identifying a key obstacle: redundant visual information that distorts multimodal similarity and degrades contextual reasoning. The authors propose a **demonstration selection method** based on *diversity–coverage* principles that jointly considers content and structure from a multimodal perspective. Using a new **GQA-ICCG** benchmark derived from GQA, they show consistent accuracy gains across OpenFlamingo, Otter, FROMAGe, and IDEFICS models.  
-- **Keywords:** compositional generalization, in-context learning, vision-language models, redundancy reduction, demonstration selection, multimodal reasoning, GQA-ICCG dataset.  
-
 ### [Rule Extrapolation in Language Models: A Study of Compositional Generalization on OOD Prompts](https://arxiv.org/pdf/2409.13728)
 - **Year:** 2024  
 - **Conference/Venue:** 38th Conference on Neural Information Processing Systems (NeurIPS 2024)  
