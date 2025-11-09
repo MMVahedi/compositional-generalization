@@ -104,3 +104,12 @@
 * **Institutions:** Beijing Institute of Technology; Zhejiang University
 * **Abstract:** Uses **diversity–coverage**-based demo selection to reduce redundancy and align multimodal context, improving ICCG on GQA-ICCG and VQA v2 across several LVLMs.
 * **Keywords:** in-context learning, LVLMs, demonstration selection, ICCG.
+
+
+
+
+
+
+
+
+[COMPACT: COMPositional Atomic-to-Complex Visual Capability Tuning](https://arxiv.org/pdf/2504.21850)

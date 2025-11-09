@@ -62,3 +62,13 @@
 - **Abstract:** Introduces **DBCA** to construct and assess splits with **similar atom** but **different compound** distributions, and releases **CFQ** (Compositional Freebase Questions). Finds strong **negative correlation** between compound divergence and accuracy across architectures; also builds SCAN splits with DBCA. :contentReference[oaicite:8]{index=8}  
 - **Keywords:** CFQ, DBCA, atom vs. compound distributions, benchmark construction.
 
+
+
+
+
+
+
+
+[Compositional Generalization Across Distributional Shifts with Sparse Tree Operations](https://proceedings.neurips.cc/paper_files/paper/2024/file/ccfa9ba5a84d0e4c620093d27102b7c5-Paper-Conference.pdf)
+
+[Lost in Latent Space: Examining failures of disentangled models at combinatorial generalisation](https://openreview.net/pdf?id=7yUxTNWyQGf)
