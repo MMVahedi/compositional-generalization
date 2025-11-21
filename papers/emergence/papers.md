@@ -20,6 +20,8 @@
   This paper introduces a theoretical and empirical framework to explain **compositional generalization** and emergent structure learning in generative models. Building on empirical findings from text-conditioned diffusion models, the authors define a simplified abstraction—the **Structured Identity Mapping (SIM)** task—where a network learns identity mappings over a Gaussian mixture with structured centroids representing “concepts.” The SIM task captures key empirical phenomena observed in multimodal models, including sequential learning of concepts and sensitivity to data structure. The paper discovers **Swing-by Dynamics**, a new mechanism underlying **non-monotonic learning curves** and multiple-descent behaviors in out-of-distribution (OOD) generalization. Analytical results on deep linear models (MLPs and symmetric 2-layer networks) reveal alternating stages of growth and suppression in the model Jacobian, corresponding to transient memorization and recovery phases—mirroring behavior in diffusion models. Empirical experiments with diffusion models confirm these theoretical predictions: models exhibit sequential concept learning, double-descent-like OOD loss curves, and exponential slowing in learning speed. Together, these results connect the **geometry of compositional data**, **training dynamics**, and **emergent generalization** in modern generative systems.  
 * **Keywords:** compositional generalization, concept learning, diffusion models, swing-by dynamics, multiple descent, learning dynamics, deep linear networks, representation geometry.
 
+---
+
 ## 2024
 
 ### [Emergence of Hidden Capabilities: Exploring Learning Dynamics in Concept Space](https://proceedings.neurips.cc/paper_files/paper/2024/file/99e6bcf460ea36818cf236da29311e73-Paper-Conference.pdf)
@@ -59,6 +61,8 @@
 - **Institutions:** Racah Institute of Physics, Hebrew University of Jerusalem; Tel Aviv University  
 - **Abstract:** Provides a theoretical framework showing that **grokking**—the delayed generalization phenomenon where networks suddenly acquire test accuracy after long plateaus—is a **first-order phase transition** in the feature space of neural networks. Using mean-field theory and adaptive kernel analysis, the authors demonstrate that training dynamics undergo a sharp **representation phase transition** from random Gaussian features to feature-aligned mixtures as networks begin to generalize. This transition exhibits the hallmarks of a thermodynamic phase change, with coexistence of memorization and generalization phases and abrupt realignment of internal representations.  
 - **Keywords:** grokking, phase transition, feature learning, adaptive kernel theory, representation dynamics, generalization, statistical mechanics.
+
+---
 
 ## 2023
 

@@ -16,6 +16,8 @@
 - **Abstract:** Defines morphemes as **compositional primitives** and introduces generative (productivity) and discriminative (systematicity) tasks to probe morphological generalization. Focusing on **Turkish** and **Finnish**, the study evaluates instruction-tuned multilingual LLMs (e.g., GPT-4, Gemini, Aya, Qwen). Models struggle especially on **novel roots** and as **morphological complexity** increases: productivity accuracy drops toward zero with longer affix chains, and systematicity shows large gaps in a stringent **coherence** metric compared to humans, despite above-chance performance on individual combinations. Overall, LLMs lag far behind human **morphological compositionality** in agglutinative languages. :contentReference[oaicite:1]{index=1}  
 - **Keywords:** morphology, compositional generalization, productivity, systematicity, agglutinative languages, Turkish, Finnish, LLM evaluation, coherence metric, nonce/Wug testing.
 
+---
+
 ## 2024
 
 ### [Rule Extrapolation in Language Models: A Study of Compositional Generalization on OOD Prompts](https://arxiv.org/pdf/2409.13728)
@@ -38,6 +40,8 @@
 - **Institutions:** Tencent AI Lab (Bellevue, WA, USA); (author affiliation note: one author affiliated with Georgia Institute of Technology)  
 - **Abstract:** Proposes **skills-in-context (SKiC)** prompts that demonstrate foundational skills and composed examples within one context. With as few as two exemplars, SKiC yields near-perfect systematic generalization across tasks, transfers well, and—when used for fine-tuning—enables zero-shot weak-to-strong generalization.  
 - **Keywords:** skills-in-context, in-context learning, compositional generalization, systematic generalization, prompting, fine-tuning, weak-to-strong generalization.  
+
+---
 
 ## 2023
 
