@@ -1,5 +1,4 @@
 # Papers
-
 ## 2025
 
 ### [New Evidence of the Two-Phase Learning Dynamics of Neural Networks](https://arxiv.org/pdf/2505.13900)
