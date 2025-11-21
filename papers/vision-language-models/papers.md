@@ -22,6 +22,22 @@
 * **Abstract:** **HyCoCLIP** models hierarchical inter/intra-modal relations in hyperbolic space with contrastive + entailment-cone objectives, improving zero-shot and hierarchical generalization vs. CLIP/MERU.
 * **Keywords:** hyperbolic embeddings, compositionality, entailment learning, vision-language models.
 
+### [COMPACT: COMPositional Atomic-to-Complex Visual Capability Tuning](https://princetonvisualai.github.io/compact/)
+
+- **Year:** 2025
+- **Conference/Venue:** CVPR 2025
+- **Institutions:** Princeton University; Meta AI
+- **Abstract:** Introduces **COMPACT** to generate training datasets explicitly controlling for the compositional complexity of visual tasks, improving **Multimodal Large Language Models (MLLMs)** by combining atomic visual capabilities. Achieves substantial performance improvements on complex tasks with less than 10% of the data budget of **LLaVA-665K**.
+- **Keywords:** COMPACT, visual compositional tuning, MLLMs, training dataset generation, data efficiency.
+
+### [Diffusion Classifiers Understand Compositionality, but Conditions Apply](https://github.com/eugene6923/Diffusion-Classifiers-Compositionality)
+
+- **Year:** 2025    
+- **Conference/Venue:** NeurIPS 2025
+- **Institutions:** TU Darmstadt & hessian.AI; University of Tübingen
+- **Abstract:** Explores the **compositional capabilities** of **diffusion models** for discriminative tasks. Introduces a new benchmark (**SELF-BENCH**) and shows how diffusion classifiers excel at compositional understanding but underperform in tasks like **counting**. Investigates the importance of **timestep weighting** to mitigate domain gaps, offering strategies to enhance performance.
+- **Keywords:** diffusion models, compositional generalization, timestep weighting, SELF-BENCH, compositional classifiers.
+
 ### [Exploring Compositional Generalization of Multimodal LLMs for Medical Imaging](https://arxiv.org/pdf/2412.20070.pdf)
 
 * **Year:** 2025
@@ -105,16 +121,10 @@
 * **Abstract:** Uses **diversity–coverage**-based demo selection to reduce redundancy and align multimodal context, improving ICCG on GQA-ICCG and VQA v2 across several LVLMs.
 * **Keywords:** in-context learning, LVLMs, demonstration selection, ICCG.
 
+### [In-Context Compositional Generalization for Large Vision-Language Models](https://aclanthology.org/2024.emnlp-main.996.pdf)
 
-
-
-
-
-
-
-[COMPACT: COMPositional Atomic-to-Complex Visual Capability Tuning](https://arxiv.org/pdf/2504.21850)
-
-
-[Diffusion Classifiers Understand Compositionality, but Conditions Apply](https://arxiv.org/pdf/2505.17955v2)
-
-[Sparo: Selective Attention for Robust and Compositional Transformer Encodings for Vision](https://arxiv.org/pdf/2404.15721v2)
+- **Year:** 2024    
+- **Conference/Venue:** Empirical Methods in Natural Language Processing (**EMNLP 2024**)
+- **Institutions:** Beijing Institute of Technology; Zhejiang University
+- **Abstract:** Uses **diversity–coverage**-based demo selection to reduce redundancy and align multimodal context, improving **In-Context Compositional Generalization (ICCG)** on benchmarks like **GQA-ICCG** and **VQA v2** across several **Large Vision-Language Models (LVLMs)**
+- **Keywords:** in-context learning, LVLMs, demonstration selection, ICCG.

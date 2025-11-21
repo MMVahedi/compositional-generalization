@@ -19,8 +19,6 @@
 - **Abstract:** Studies compositional generalization in **sparse mixture-of-experts (SMoE)** architectures. Finds that optimal expert activation scales with task complexity rather than being minimal. Provides a theoretical scaling law balancing approximation and estimation errors, validated on reasoning benchmarks (SRAVEN, SKILL-MIX).
 - **Keywords:** mixture-of-experts, sparsity, compositional generalization, optimal routing, transformers, modularity
 
----
-
 ### [Attention as a Hypernetwork](https://arxiv.org/pdf/2406.05816)
 
 - **Year:** 2024    
@@ -28,8 +26,6 @@
 - **Institutions:** ETH Zürich; Google DeepMind
 - **Abstract:** Reinterprets multi-head attention as a **hypernetwork**: attention scores form a latent code configuring a value network for each key-query pair. Nonlinear extensions improve compositional generalization in reasoning tasks such as symbolic Raven’s matrices.
 - **Keywords:** transformer, hypernetwork, multi-head attention, compositional generalization, abstract reasoning, latent code
-
----
 
 ### [Block-Operations: Using Modular Routing to Improve Compositional Generalization](https://arxiv.org/pdf/2408.00508)
 
@@ -50,8 +46,6 @@
 - **Institutions:** Meta-learning & Modularity Group
 - **Abstract:** Analyzes when meta-learned **modular architectures** (e.g., hypernetworks) can discover compositional solutions that generalize beyond training distributions. Provides a teacher-student theory of modular identifiability and empirical validation showing hypernetworks outperform monolithic meta-learners like MAML.
 - **Keywords:** modular architecture, hypernetwork, meta-learning, compositional generalization, identifiability
-
----
 
 ### [Human-like Systematic Generalization via Meta-Learning](https://www.nature.com/articles/s41586-023-06668-3)
 
