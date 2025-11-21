@@ -113,3 +113,8 @@
 
 
 [COMPACT: COMPositional Atomic-to-Complex Visual Capability Tuning](https://arxiv.org/pdf/2504.21850)
+
+
+[Diffusion Classifiers Understand Compositionality, but Conditions Apply](https://arxiv.org/pdf/2505.17955v2)
+
+[Sparo: Selective Attention for Robust and Compositional Transformer Encodings for Vision](https://arxiv.org/pdf/2404.15721v2)
