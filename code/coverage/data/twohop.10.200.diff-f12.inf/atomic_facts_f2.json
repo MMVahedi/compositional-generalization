@@ -1,0 +1,402 @@
+[
+  {
+    "input_text": "<t_0><t_0>",
+    "target_text": "<t_0><t_0><t_8></a>"
+  },
+  {
+    "input_text": "<t_0><t_1>",
+    "target_text": "<t_0><t_1><t_1></a>"
+  },
+  {
+    "input_text": "<t_0><t_2>",
+    "target_text": "<t_0><t_2><t_0></a>"
+  },
+  {
+    "input_text": "<t_0><t_3>",
+    "target_text": "<t_0><t_3><t_4></a>"
+  },
+  {
+    "input_text": "<t_0><t_4>",
+    "target_text": "<t_0><t_4><t_4></a>"
+  },
+  {
+    "input_text": "<t_0><t_5>",
+    "target_text": "<t_0><t_5><t_4></a>"
+  },
+  {
+    "input_text": "<t_0><t_6>",
+    "target_text": "<t_0><t_6><t_7></a>"
+  },
+  {
+    "input_text": "<t_0><t_7>",
+    "target_text": "<t_0><t_7><t_6></a>"
+  },
+  {
+    "input_text": "<t_0><t_8>",
+    "target_text": "<t_0><t_8><t_9></a>"
+  },
+  {
+    "input_text": "<t_0><t_9>",
+    "target_text": "<t_0><t_9><t_0></a>"
+  },
+  {
+    "input_text": "<t_1><t_0>",
+    "target_text": "<t_1><t_0><t_4></a>"
+  },
+  {
+    "input_text": "<t_1><t_1>",
+    "target_text": "<t_1><t_1><t_3></a>"
+  },
+  {
+    "input_text": "<t_1><t_2>",
+    "target_text": "<t_1><t_2><t_8></a>"
+  },
+  {
+    "input_text": "<t_1><t_3>",
+    "target_text": "<t_1><t_3><t_2></a>"
+  },
+  {
+    "input_text": "<t_1><t_4>",
+    "target_text": "<t_1><t_4><t_1></a>"
+  },
+  {
+    "input_text": "<t_1><t_5>",
+    "target_text": "<t_1><t_5><t_4></a>"
+  },
+  {
+    "input_text": "<t_1><t_6>",
+    "target_text": "<t_1><t_6><t_4></a>"
+  },
+  {
+    "input_text": "<t_1><t_7>",
+    "target_text": "<t_1><t_7><t_2></a>"
+  },
+  {
+    "input_text": "<t_1><t_8>",
+    "target_text": "<t_1><t_8><t_2></a>"
+  },
+  {
+    "input_text": "<t_1><t_9>",
+    "target_text": "<t_1><t_9><t_9></a>"
+  },
+  {
+    "input_text": "<t_2><t_0>",
+    "target_text": "<t_2><t_0><t_4></a>"
+  },
+  {
+    "input_text": "<t_2><t_1>",
+    "target_text": "<t_2><t_1><t_8></a>"
+  },
+  {
+    "input_text": "<t_2><t_2>",
+    "target_text": "<t_2><t_2><t_5></a>"
+  },
+  {
+    "input_text": "<t_2><t_3>",
+    "target_text": "<t_2><t_3><t_0></a>"
+  },
+  {
+    "input_text": "<t_2><t_4>",
+    "target_text": "<t_2><t_4><t_9></a>"
+  },
+  {
+    "input_text": "<t_2><t_5>",
+    "target_text": "<t_2><t_5><t_8></a>"
+  },
+  {
+    "input_text": "<t_2><t_6>",
+    "target_text": "<t_2><t_6><t_9></a>"
+  },
+  {
+    "input_text": "<t_2><t_7>",
+    "target_text": "<t_2><t_7><t_9></a>"
+  },
+  {
+    "input_text": "<t_2><t_8>",
+    "target_text": "<t_2><t_8><t_8></a>"
+  },
+  {
+    "input_text": "<t_2><t_9>",
+    "target_text": "<t_2><t_9><t_1></a>"
+  },
+  {
+    "input_text": "<t_3><t_0>",
+    "target_text": "<t_3><t_0><t_4></a>"
+  },
+  {
+    "input_text": "<t_3><t_1>",
+    "target_text": "<t_3><t_1><t_2></a>"
+  },
+  {
+    "input_text": "<t_3><t_2>",
+    "target_text": "<t_3><t_2><t_4></a>"
+  },
+  {
+    "input_text": "<t_3><t_3>",
+    "target_text": "<t_3><t_3><t_0></a>"
+  },
+  {
+    "input_text": "<t_3><t_4>",
+    "target_text": "<t_3><t_4><t_3></a>"
+  },
+  {
+    "input_text": "<t_3><t_5>",
+    "target_text": "<t_3><t_5><t_9></a>"
+  },
+  {
+    "input_text": "<t_3><t_6>",
+    "target_text": "<t_3><t_6><t_2></a>"
+  },
+  {
+    "input_text": "<t_3><t_7>",
+    "target_text": "<t_3><t_7><t_7></a>"
+  },
+  {
+    "input_text": "<t_3><t_8>",
+    "target_text": "<t_3><t_8><t_4></a>"
+  },
+  {
+    "input_text": "<t_3><t_9>",
+    "target_text": "<t_3><t_9><t_4></a>"
+  },
+  {
+    "input_text": "<t_4><t_0>",
+    "target_text": "<t_4><t_0><t_9></a>"
+  },
+  {
+    "input_text": "<t_4><t_1>",
+    "target_text": "<t_4><t_1><t_9></a>"
+  },
+  {
+    "input_text": "<t_4><t_2>",
+    "target_text": "<t_4><t_2><t_5></a>"
+  },
+  {
+    "input_text": "<t_4><t_3>",
+    "target_text": "<t_4><t_3><t_7></a>"
+  },
+  {
+    "input_text": "<t_4><t_4>",
+    "target_text": "<t_4><t_4><t_1></a>"
+  },
+  {
+    "input_text": "<t_4><t_5>",
+    "target_text": "<t_4><t_5><t_2></a>"
+  },
+  {
+    "input_text": "<t_4><t_6>",
+    "target_text": "<t_4><t_6><t_9></a>"
+  },
+  {
+    "input_text": "<t_4><t_7>",
+    "target_text": "<t_4><t_7><t_5></a>"
+  },
+  {
+    "input_text": "<t_4><t_8>",
+    "target_text": "<t_4><t_8><t_5></a>"
+  },
+  {
+    "input_text": "<t_4><t_9>",
+    "target_text": "<t_4><t_9><t_7></a>"
+  },
+  {
+    "input_text": "<t_5><t_0>",
+    "target_text": "<t_5><t_0><t_0></a>"
+  },
+  {
+    "input_text": "<t_5><t_1>",
+    "target_text": "<t_5><t_1><t_5></a>"
+  },
+  {
+    "input_text": "<t_5><t_2>",
+    "target_text": "<t_5><t_2><t_5></a>"
+  },
+  {
+    "input_text": "<t_5><t_3>",
+    "target_text": "<t_5><t_3><t_8></a>"
+  },
+  {
+    "input_text": "<t_5><t_4>",
+    "target_text": "<t_5><t_4><t_1></a>"
+  },
+  {
+    "input_text": "<t_5><t_5>",
+    "target_text": "<t_5><t_5><t_9></a>"
+  },
+  {
+    "input_text": "<t_5><t_6>",
+    "target_text": "<t_5><t_6><t_0></a>"
+  },
+  {
+    "input_text": "<t_5><t_7>",
+    "target_text": "<t_5><t_7><t_1></a>"
+  },
+  {
+    "input_text": "<t_5><t_8>",
+    "target_text": "<t_5><t_8><t_5></a>"
+  },
+  {
+    "input_text": "<t_5><t_9>",
+    "target_text": "<t_5><t_9><t_6></a>"
+  },
+  {
+    "input_text": "<t_6><t_0>",
+    "target_text": "<t_6><t_0><t_2></a>"
+  },
+  {
+    "input_text": "<t_6><t_1>",
+    "target_text": "<t_6><t_1><t_1></a>"
+  },
+  {
+    "input_text": "<t_6><t_2>",
+    "target_text": "<t_6><t_2><t_8></a>"
+  },
+  {
+    "input_text": "<t_6><t_3>",
+    "target_text": "<t_6><t_3><t_2></a>"
+  },
+  {
+    "input_text": "<t_6><t_4>",
+    "target_text": "<t_6><t_4><t_5></a>"
+  },
+  {
+    "input_text": "<t_6><t_5>",
+    "target_text": "<t_6><t_5><t_6></a>"
+  },
+  {
+    "input_text": "<t_6><t_6>",
+    "target_text": "<t_6><t_6><t_4></a>"
+  },
+  {
+    "input_text": "<t_6><t_7>",
+    "target_text": "<t_6><t_7><t_5></a>"
+  },
+  {
+    "input_text": "<t_6><t_8>",
+    "target_text": "<t_6><t_8><t_5></a>"
+  },
+  {
+    "input_text": "<t_6><t_9>",
+    "target_text": "<t_6><t_9><t_9></a>"
+  },
+  {
+    "input_text": "<t_7><t_0>",
+    "target_text": "<t_7><t_0><t_2></a>"
+  },
+  {
+    "input_text": "<t_7><t_1>",
+    "target_text": "<t_7><t_1><t_7></a>"
+  },
+  {
+    "input_text": "<t_7><t_2>",
+    "target_text": "<t_7><t_2><t_2></a>"
+  },
+  {
+    "input_text": "<t_7><t_3>",
+    "target_text": "<t_7><t_3><t_3></a>"
+  },
+  {
+    "input_text": "<t_7><t_4>",
+    "target_text": "<t_7><t_4><t_6></a>"
+  },
+  {
+    "input_text": "<t_7><t_5>",
+    "target_text": "<t_7><t_5><t_2></a>"
+  },
+  {
+    "input_text": "<t_7><t_6>",
+    "target_text": "<t_7><t_6><t_3></a>"
+  },
+  {
+    "input_text": "<t_7><t_7>",
+    "target_text": "<t_7><t_7><t_7></a>"
+  },
+  {
+    "input_text": "<t_7><t_8>",
+    "target_text": "<t_7><t_8><t_0></a>"
+  },
+  {
+    "input_text": "<t_7><t_9>",
+    "target_text": "<t_7><t_9><t_4></a>"
+  },
+  {
+    "input_text": "<t_8><t_0>",
+    "target_text": "<t_8><t_0><t_9></a>"
+  },
+  {
+    "input_text": "<t_8><t_1>",
+    "target_text": "<t_8><t_1><t_9></a>"
+  },
+  {
+    "input_text": "<t_8><t_2>",
+    "target_text": "<t_8><t_2><t_0></a>"
+  },
+  {
+    "input_text": "<t_8><t_3>",
+    "target_text": "<t_8><t_3><t_2></a>"
+  },
+  {
+    "input_text": "<t_8><t_4>",
+    "target_text": "<t_8><t_4><t_2></a>"
+  },
+  {
+    "input_text": "<t_8><t_5>",
+    "target_text": "<t_8><t_5><t_9></a>"
+  },
+  {
+    "input_text": "<t_8><t_6>",
+    "target_text": "<t_8><t_6><t_8></a>"
+  },
+  {
+    "input_text": "<t_8><t_7>",
+    "target_text": "<t_8><t_7><t_8></a>"
+  },
+  {
+    "input_text": "<t_8><t_8>",
+    "target_text": "<t_8><t_8><t_3></a>"
+  },
+  {
+    "input_text": "<t_8><t_9>",
+    "target_text": "<t_8><t_9><t_1></a>"
+  },
+  {
+    "input_text": "<t_9><t_0>",
+    "target_text": "<t_9><t_0><t_8></a>"
+  },
+  {
+    "input_text": "<t_9><t_1>",
+    "target_text": "<t_9><t_1><t_7></a>"
+  },
+  {
+    "input_text": "<t_9><t_2>",
+    "target_text": "<t_9><t_2><t_6></a>"
+  },
+  {
+    "input_text": "<t_9><t_3>",
+    "target_text": "<t_9><t_3><t_9></a>"
+  },
+  {
+    "input_text": "<t_9><t_4>",
+    "target_text": "<t_9><t_4><t_6></a>"
+  },
+  {
+    "input_text": "<t_9><t_5>",
+    "target_text": "<t_9><t_5><t_0></a>"
+  },
+  {
+    "input_text": "<t_9><t_6>",
+    "target_text": "<t_9><t_6><t_8></a>"
+  },
+  {
+    "input_text": "<t_9><t_7>",
+    "target_text": "<t_9><t_7><t_2></a>"
+  },
+  {
+    "input_text": "<t_9><t_8>",
+    "target_text": "<t_9><t_8><t_6></a>"
+  },
+  {
+    "input_text": "<t_9><t_9>",
+    "target_text": "<t_9><t_9><t_9></a>"
+  }
+]
