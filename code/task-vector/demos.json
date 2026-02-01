@@ -1,0 +1,464 @@
+[
+  {
+    "input": "France",
+    "output": "Paris",
+    "id": 0,
+    "meta": {}
+  },
+  {
+    "input": "Germany",
+    "output": "Berlin",
+    "id": 1,
+    "meta": {}
+  },
+  {
+    "input": "Italy",
+    "output": "Rome",
+    "id": 2,
+    "meta": {}
+  },
+  {
+    "input": "Japan",
+    "output": "Tokyo",
+    "id": 3,
+    "meta": {}
+  },
+  {
+    "input": "Morocco",
+    "output": "Rabat",
+    "id": 4,
+    "meta": {}
+  },
+  {
+    "input": "Finland",
+    "output": "Helsinki",
+    "id": 5,
+    "meta": {}
+  },
+  {
+    "input": "Brazil",
+    "output": "Bras\u00edlia",
+    "id": 6,
+    "meta": {}
+  },
+  {
+    "input": "South Korea",
+    "output": "Seoul",
+    "id": 7,
+    "meta": {}
+  },
+  {
+    "input": "Canada",
+    "output": "Ottawa",
+    "id": 8,
+    "meta": {}
+  },
+  {
+    "input": "Spain",
+    "output": "Madrid",
+    "id": 9,
+    "meta": {}
+  },
+  {
+    "input": "Portugal",
+    "output": "Lisbon",
+    "id": 10,
+    "meta": {}
+  },
+  {
+    "input": "Netherlands",
+    "output": "Amsterdam",
+    "id": 11,
+    "meta": {}
+  },
+  {
+    "input": "Belgium",
+    "output": "Brussels",
+    "id": 12,
+    "meta": {}
+  },
+  {
+    "input": "Switzerland",
+    "output": "Bern",
+    "id": 13,
+    "meta": {}
+  },
+  {
+    "input": "Austria",
+    "output": "Vienna",
+    "id": 14,
+    "meta": {}
+  },
+  {
+    "input": "Sweden",
+    "output": "Stockholm",
+    "id": 15,
+    "meta": {}
+  },
+  {
+    "input": "Norway",
+    "output": "Oslo",
+    "id": 16,
+    "meta": {}
+  },
+  {
+    "input": "Denmark",
+    "output": "Copenhagen",
+    "id": 17,
+    "meta": {}
+  },
+  {
+    "input": "Poland",
+    "output": "Warsaw",
+    "id": 18,
+    "meta": {}
+  },
+  {
+    "input": "Czech Republic",
+    "output": "Prague",
+    "id": 19,
+    "meta": {}
+  },
+  {
+    "input": "Slovakia",
+    "output": "Bratislava",
+    "id": 20,
+    "meta": {}
+  },
+  {
+    "input": "Hungary",
+    "output": "Budapest",
+    "id": 21,
+    "meta": {}
+  },
+  {
+    "input": "Romania",
+    "output": "Bucharest",
+    "id": 22,
+    "meta": {}
+  },
+  {
+    "input": "Bulgaria",
+    "output": "Sofia",
+    "id": 23,
+    "meta": {}
+  },
+  {
+    "input": "Greece",
+    "output": "Athens",
+    "id": 24,
+    "meta": {}
+  },
+  {
+    "input": "Turkey",
+    "output": "Ankara",
+    "id": 25,
+    "meta": {}
+  },
+  {
+    "input": "Russia",
+    "output": "Moscow",
+    "id": 26,
+    "meta": {}
+  },
+  {
+    "input": "Ukraine",
+    "output": "Kyiv",
+    "id": 27,
+    "meta": {}
+  },
+  {
+    "input": "United Kingdom",
+    "output": "London",
+    "id": 28,
+    "meta": {}
+  },
+  {
+    "input": "Ireland",
+    "output": "Dublin",
+    "id": 29,
+    "meta": {}
+  },
+  {
+    "input": "United States",
+    "output": "Washington D.C.",
+    "id": 30,
+    "meta": {}
+  },
+  {
+    "input": "Mexico",
+    "output": "Mexico City",
+    "id": 31,
+    "meta": {}
+  },
+  {
+    "input": "Argentina",
+    "output": "Buenos Aires",
+    "id": 32,
+    "meta": {}
+  },
+  {
+    "input": "Chile",
+    "output": "Santiago",
+    "id": 33,
+    "meta": {}
+  },
+  {
+    "input": "Peru",
+    "output": "Lima",
+    "id": 34,
+    "meta": {}
+  },
+  {
+    "input": "Colombia",
+    "output": "Bogot\u00e1",
+    "id": 35,
+    "meta": {}
+  },
+  {
+    "input": "Venezuela",
+    "output": "Caracas",
+    "id": 36,
+    "meta": {}
+  },
+  {
+    "input": "Ecuador",
+    "output": "Quito",
+    "id": 37,
+    "meta": {}
+  },
+  {
+    "input": "Bolivia",
+    "output": "Sucre",
+    "id": 38,
+    "meta": {}
+  },
+  {
+    "input": "Paraguay",
+    "output": "Asunci\u00f3n",
+    "id": 39,
+    "meta": {}
+  },
+  {
+    "input": "Uruguay",
+    "output": "Montevideo",
+    "id": 40,
+    "meta": {}
+  },
+  {
+    "input": "China",
+    "output": "Beijing",
+    "id": 41,
+    "meta": {}
+  },
+  {
+    "input": "India",
+    "output": "New Delhi",
+    "id": 42,
+    "meta": {}
+  },
+  {
+    "input": "Pakistan",
+    "output": "Islamabad",
+    "id": 43,
+    "meta": {}
+  },
+  {
+    "input": "Bangladesh",
+    "output": "Dhaka",
+    "id": 44,
+    "meta": {}
+  },
+  {
+    "input": "Nepal",
+    "output": "Kathmandu",
+    "id": 45,
+    "meta": {}
+  },
+  {
+    "input": "Sri Lanka",
+    "output": "Sri Jayawardenepura Kotte",
+    "id": 46,
+    "meta": {}
+  },
+  {
+    "input": "Thailand",
+    "output": "Bangkok",
+    "id": 47,
+    "meta": {}
+  },
+  {
+    "input": "Vietnam",
+    "output": "Hanoi",
+    "id": 48,
+    "meta": {}
+  },
+  {
+    "input": "Cambodia",
+    "output": "Phnom Penh",
+    "id": 49,
+    "meta": {}
+  },
+  {
+    "input": "Laos",
+    "output": "Vientiane",
+    "id": 50,
+    "meta": {}
+  },
+  {
+    "input": "Malaysia",
+    "output": "Kuala Lumpur",
+    "id": 51,
+    "meta": {}
+  },
+  {
+    "input": "Singapore",
+    "output": "Singapore",
+    "id": 52,
+    "meta": {}
+  },
+  {
+    "input": "Indonesia",
+    "output": "Jakarta",
+    "id": 53,
+    "meta": {}
+  },
+  {
+    "input": "Philippines",
+    "output": "Manila",
+    "id": 54,
+    "meta": {}
+  },
+  {
+    "input": "Australia",
+    "output": "Canberra",
+    "id": 55,
+    "meta": {}
+  },
+  {
+    "input": "New Zealand",
+    "output": "Wellington",
+    "id": 56,
+    "meta": {}
+  },
+  {
+    "input": "South Africa",
+    "output": "Pretoria",
+    "id": 57,
+    "meta": {}
+  },
+  {
+    "input": "Nigeria",
+    "output": "Abuja",
+    "id": 58,
+    "meta": {}
+  },
+  {
+    "input": "Kenya",
+    "output": "Nairobi",
+    "id": 59,
+    "meta": {}
+  },
+  {
+    "input": "Ethiopia",
+    "output": "Addis Ababa",
+    "id": 60,
+    "meta": {}
+  },
+  {
+    "input": "Ghana",
+    "output": "Accra",
+    "id": 61,
+    "meta": {}
+  },
+  {
+    "input": "Senegal",
+    "output": "Dakar",
+    "id": 62,
+    "meta": {}
+  },
+  {
+    "input": "Egypt",
+    "output": "Cairo",
+    "id": 63,
+    "meta": {}
+  },
+  {
+    "input": "Tunisia",
+    "output": "Tunis",
+    "id": 64,
+    "meta": {}
+  },
+  {
+    "input": "Algeria",
+    "output": "Algiers",
+    "id": 65,
+    "meta": {}
+  },
+  {
+    "input": "Libya",
+    "output": "Tripoli",
+    "id": 66,
+    "meta": {}
+  },
+  {
+    "input": "Saudi Arabia",
+    "output": "Riyadh",
+    "id": 67,
+    "meta": {}
+  },
+  {
+    "input": "United Arab Emirates",
+    "output": "Abu Dhabi",
+    "id": 68,
+    "meta": {}
+  },
+  {
+    "input": "Qatar",
+    "output": "Doha",
+    "id": 69,
+    "meta": {}
+  },
+  {
+    "input": "Kuwait",
+    "output": "Kuwait City",
+    "id": 70,
+    "meta": {}
+  },
+  {
+    "input": "Iran",
+    "output": "Tehran",
+    "id": 71,
+    "meta": {}
+  },
+  {
+    "input": "Iraq",
+    "output": "Baghdad",
+    "id": 72,
+    "meta": {}
+  },
+  {
+    "input": "Israel",
+    "output": "Jerusalem",
+    "id": 73,
+    "meta": {}
+  },
+  {
+    "input": "Jordan",
+    "output": "Amman",
+    "id": 74,
+    "meta": {}
+  },
+  {
+    "input": "Lebanon",
+    "output": "Beirut",
+    "id": 75,
+    "meta": {}
+  },
+  {
+    "input": "Syria",
+    "output": "Damascus",
+    "id": 76,
+    "meta": {}
+  }
+]
