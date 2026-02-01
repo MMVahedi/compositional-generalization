@@ -1,0 +1,11 @@
+{
+  "max_tokens": 15,
+  "block_idx": [9, 10, 11, 12],
+  "alpha": 1.0,
+  "average_separators": false,
+  "normalize": null,
+  "system_prompt": "Produce the correct completion. Output only the result.",
+  "temperature": 0.0,
+  "top_k": 1,
+  "top_p": 1.0
+}

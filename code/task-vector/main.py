@@ -2,8 +2,7 @@ import os
 import argparse
 import logging
 import json
-from typing import List, Sequence, Dict, Any
-from dataclasses import dataclass, field
+from typing import List, Sequence
 
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -16,29 +15,22 @@ from icl_task_vectors import (
     Injector,
     choose_backend,
 )
+from coverage.demontration_pair import DemoPair
+
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
-# Config / defaults
-MAX_TOKENS = 15
-# You can set BLOCK_IDX to a single int or a list of ints to extract/inject across multiple layers.
-BLOCK_IDX = [9, 10, 11, 12]
-ALPHA = 1.0
-AVERAGE_SEPARATORS = False
+# Global config variables
+MAX_TOKENS = None
+BLOCK_IDX = None
+ALPHA = None
+AVERAGE_SEPARATORS = None
 NORMALIZE = None
-SYSTEM_PROMPT = "Produce the correct completion. Output only the result."
-TEMPERATURE = 0.0
-TOP_K = 1
-TOP_P = 1.0
-
-
-@dataclass
-class DemoPair:
-    """Representation of a single demonstration pair."""
-    input: str
-    output: str
-    meta: Dict[str, Any] = field(default_factory=dict)
+SYSTEM_PROMPT = None
+TEMPERATURE = None
+TOP_K = None
+TOP_P = None
 
 
 def build_fewshot_prompt(pairs: Sequence[DemoPair], query_x: str, sep: str, system_prompt: str | None = None) -> str:
@@ -60,7 +52,26 @@ def build_query_prompt(query_x: str, sep: str, system_prompt: str | None = None)
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
     p.add_argument("--model-dir", type=str, required=True, help="Local directory containing pretrained model/tokenizer")
+    p.add_argument("--config", type=str, required=True, help="Path to config file")
+    p.add_argument("--query", type=str, required=True, help="The query input for the task")
+    p.add_argument("--sep", type=str, default="->", help="Separator token for prompts (default: '->')")
     return p.parse_args()
+
+
+def load_config(config_path: str) -> None:
+    with open(config_path, 'r') as f:
+        config = json.load(f)
+
+    global MAX_TOKENS, BLOCK_IDX, ALPHA, AVERAGE_SEPARATORS, NORMALIZE, SYSTEM_PROMPT, TEMPERATURE, TOP_K, TOP_P
+    MAX_TOKENS = config['max_tokens']
+    BLOCK_IDX = config['block_idx']
+    ALPHA = config['alpha']
+    AVERAGE_SEPARATORS = config['average_separators']
+    NORMALIZE = config['normalize']
+    SYSTEM_PROMPT = config['system_prompt']
+    TEMPERATURE = config['temperature']
+    TOP_K = config['top_k']
+    TOP_P = config['top_p']
 
 
 def prepare_environment(model_source: str, local_files_only: bool = True) -> None:
@@ -95,14 +106,16 @@ def get_demo_pairs(demos_path: str | None = None) -> List[DemoPair]:
 
     pairs: List[DemoPair] = []
     for item in data:
-        if isinstance(item, list) and len(item) >= 2:
-            # Interpret list entries as [input, output] or [input, output, meta]
-            meta = {}
-            if len(item) >= 3 and isinstance(item[2], dict):
-                meta = item[2]
-            pairs.append(DemoPair(input=item[0], output=item[1], meta=meta))
+        if isinstance(item, dict):
+            # Format: {"input": ..., "output": ..., "id": ..., "meta": {}}
+            pairs.append(DemoPair(
+                input=item['input'],
+                output=item['output'],
+                id=item['id'],
+                meta=item.get('meta', {})
+            ))
         else:
-            raise ValueError(f"Unsupported demo entry format: {item}")
+            raise ValueError(f"Unsupported demo entry format: {item}. Expected dict with 'input', 'output', 'id', 'meta'.")
     return pairs
 
 def group_demos(demos: Sequence[DemoPair], group_size: int = 4):
@@ -151,7 +164,9 @@ def extract_task_vectors(
     return avg_task_vector
 
 
-def generate_text(model, tokenizer, enc, max_new_tokens: int = MAX_TOKENS):
+def generate_text(model, tokenizer, enc, max_new_tokens: int = None):
+    if max_new_tokens is None:
+        max_new_tokens = MAX_TOKENS
     out = model.generate(
         input_ids=enc.input_ids,
         attention_mask=enc.attention_mask,
@@ -192,6 +207,9 @@ def install_hooks_and_generate(model, backend, avg_task_vector: TaskVector, inje
 
 def main():
     args = parse_args()
+
+    load_config(args.config)
+
     model_source = args.model_dir
     local_files_only = True
 
@@ -203,7 +221,7 @@ def main():
 
     model, tokenizer = load_model_and_tokenizer(model_source, device, local_files_only=local_files_only)
 
-    sep = "->"
+    sep = args.sep
     demos = get_demo_pairs()
     system_prompt = SYSTEM_PROMPT
 
@@ -214,7 +232,7 @@ def main():
     avg_task_vector = extract_task_vectors(model, cfg, pb, demos, sep, system_prompt)
 
     # Query prompt
-    query_text = build_query_prompt("Spain", sep, system_prompt=system_prompt)
+    query_text = build_query_prompt(args.query, sep, system_prompt=system_prompt)
     logger.info("\nQuery prompt (no demos):\n%s\n", query_text)
     query_enc = pb.encode(query_text, device=device)
     if len(query_enc.separator_positions) == 0:
