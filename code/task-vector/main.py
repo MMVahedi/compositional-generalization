@@ -12,10 +12,12 @@ from icl_task_vectors import (
     choose_backend,
 )
 
-from task_vector_pkg.config import load_config, BLOCK_IDX, ALPHA, AVERAGE_SEPARATORS, NORMALIZE, SYSTEM_PROMPT, NUM_SHOTS
+from task_vector_pkg.config import load_config, BLOCK_IDX, ALPHA, AVERAGE_SEPARATORS, NORMALIZE, SYSTEM_PROMPT, TEMPERATURE, TOP_K, TOP_P, NUM_SHOTS
 from task_vector_pkg.prompts import build_query_prompt
 from task_vector_pkg.demos import get_demo_pairs, group_demos
 from task_vector_pkg.task_vector import TaskVectorBuilder
+from task_vector_pkg.dataset import Dataset
+from task_vector_pkg.experiment import Experiment
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format="%(message)s")
@@ -58,6 +60,20 @@ def main():
 
     load_config(args.config)
 
+    configs = {
+        'max_tokens': MAX_TOKENS,
+        'block_idx': BLOCK_IDX,
+        'alpha': ALPHA,
+        'average_separators': AVERAGE_SEPARATORS,
+        'normalize': NORMALIZE,
+        'system_prompt': SYSTEM_PROMPT,
+        'temperature': TEMPERATURE,
+        'top_k': TOP_K,
+        'top_p': TOP_P,
+        'num_shots': NUM_SHOTS,
+        'sep': args.sep
+    }
+
     model_source = args.model_dir
     local_files_only = True
 
@@ -78,37 +94,12 @@ def main():
     cfg = TaskVectorConfig(layer_idx=BLOCK_IDX, average_separators=AVERAGE_SEPARATORS, normalize=NORMALIZE, alpha=ALPHA, device=device)
 
     queries = list(group_demos(demos, group_size=NUM_SHOTS + 1, tokenizer=prompt_builder.tokenizer))
-    tv_builder = TaskVectorBuilder(model, cfg, prompt_builder)
-    avg_task_vector = tv_builder.build_task_vector(queries, sep, system_prompt)
-
-    # Query prompt
-    query_text = build_query_prompt(args.query, sep, system_prompt=system_prompt)
-    logger.info("\nQuery prompt (no demos):\n%s\n", query_text)
-    query_enc = prompt_builder.encode(query_text, device=device)
-    if len(query_enc.separator_positions) == 0:
-        raise RuntimeError("No separator found in query prompt; check sep and template.")
-    inject_pos = query_enc.separator_positions[-1]
-
-    # Baseline few-shot generation using the last fewshot_enc we created during extraction; if not present fall back to building one.
-    # For simplicity, build a fewshot from the first group.
-    first_query_obj = list(group_demos(demos, group_size=NUM_SHOTS + 1, tokenizer=prompt_builder.tokenizer))[0]
-    fewshot_text = first_query_obj.build_prompt(sep, system_prompt)
-    fewshot_enc = prompt_builder.encode(fewshot_text, device=device)
-    base_few_text = generate_text(model, tokenizer, fewshot_enc)
-    base_text = generate_text(model, tokenizer, query_enc)
-    logger.info("Baseline (few-shot):\n%s", base_few_text)
-
-    backend = choose_backend(model)
-    injector = Injector(backend, cfg)
-    # Perform the forward-pass injection hook (keeps behavior similar to prior script)
-    injector.inject_and_forward(
-        model=model, prompt=query_enc, task_vector=avg_task_vector, inject_position=inject_pos, use_cache=False
-    )
-
-    inj_text = install_hooks_and_generate(model, backend, avg_task_vector, inject_pos, query_enc, tokenizer)
-
-    logger.info("\nBaseline (zeroshot without injection):\n%s\n", base_text)
-    logger.info("\nInjected:\n%s\n", inj_text)
+    dataset = Dataset(queries, 0)  # coverage_degree placeholder
+    experiment = Experiment(dataset, model, configs, prompt_builder)
+    
+    # Run the experiment
+    results = experiment.run()
+    logger.info("Experiment results: %s", results)
 
 
 if __name__ == "__main__":
