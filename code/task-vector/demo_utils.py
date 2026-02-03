@@ -3,6 +3,7 @@ import json
 from typing import List, Sequence
 
 from coverage.demontration_pair import DemoPair
+from query import Query
 
 
 def get_demo_pairs(demos_path: str | None = None) -> List[DemoPair]:
@@ -28,11 +29,11 @@ def get_demo_pairs(demos_path: str | None = None) -> List[DemoPair]:
     return pairs
 
 
-def group_demos(demos: Sequence[DemoPair], group_size: int):
-    """Yield groups of group_size. Each group is (group_size-1) shots + 1 query (last item is query)."""
+def group_demos(demos: Sequence[DemoPair], group_size: int, tokenizer=None):
+    """Yield Query objects, each with (group_size-1) shots + 1 query."""
     n = len(demos) // group_size
     for i in range(n):
         start = i * group_size
         shots = demos[start : start + (group_size - 1)]
-        query = demos[start + (group_size - 1)].input
-        yield shots, query
+        query_demo = demos[start + (group_size - 1)]
+        yield Query(shots, query_demo)
