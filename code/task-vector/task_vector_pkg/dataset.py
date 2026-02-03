@@ -2,7 +2,7 @@ from typing import List
 import json
 import itertools
 
-from coverage.demontration_pair import DemoPair
+from coverage.demonstration_pair import DemoPair
 from task_vector_pkg.query import Query
 
 

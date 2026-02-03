@@ -2,7 +2,7 @@ import os
 import json
 from typing import List, Sequence
 
-from coverage.demontration_pair import DemoPair
+from coverage.demonstration_pair import DemoPair
 from task_vector_pkg.query import Query
 
 

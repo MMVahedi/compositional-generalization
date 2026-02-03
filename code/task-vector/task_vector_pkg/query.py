@@ -1,6 +1,6 @@
 from typing import List
 
-from coverage.demontration_pair import DemoPair
+from coverage.demonstration_pair import DemoPair
 
 
 class Query:
