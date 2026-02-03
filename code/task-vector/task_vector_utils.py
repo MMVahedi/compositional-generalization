@@ -6,8 +6,6 @@ from icl_task_vectors import (
     TaskVectorConfig,
     TaskVector,
     TaskVectorExtractor,
-    Injector,
-    choose_backend,
 )
 from coverage.demontration_pair import DemoPair
 

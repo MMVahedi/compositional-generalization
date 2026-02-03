@@ -14,7 +14,7 @@ from icl_task_vectors import (
 )
 
 from config_loader import load_config, BLOCK_IDX, ALPHA, AVERAGE_SEPARATORS, NORMALIZE, SYSTEM_PROMPT, NUM_SHOTS
-from prompt_utils import build_query_prompt
+from prompt_utils import build_query_prompt, build_fewshot_prompt
 from demo_utils import get_demo_pairs, group_demos
 from task_vector_utils import extract_task_vectors, generate_text, install_hooks_and_generate
 
