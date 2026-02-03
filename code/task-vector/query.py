@@ -23,5 +23,12 @@ class Query:
                 counter += 1
         return counter
 
+    def build_prompt(self, sep: str, system_prompt: str | None = None) -> str:
+        """Build the few-shot prompt from demonstrations and query."""
+        chunks = [f"{p.input}{sep}{p.output}" for p in self.demonstrations]
+        chunks.append(f"{self.query_demo.input}{sep}")
+        user_prompt = ",".join(chunks)
+        return user_prompt if system_prompt is None else f"{system_prompt}\n{user_prompt}"
+
     def __repr__(self):
         return f"Query(query_input='{self.query_demo.input}', num_demos={len(self.demonstrations)})"

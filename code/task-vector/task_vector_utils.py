@@ -31,7 +31,7 @@ def extract_task_vectors(
     task_vectors = []
     tokenizer = pb.tokenizer  # Assuming PromptBuilder has tokenizer attribute
     for query_obj in group_demos(demos, group_size=num_shots + 1, tokenizer=tokenizer):
-        fewshot_text = build_fewshot_prompt(query_obj.demonstrations, query_obj.query_demo.input, sep, system_prompt=system_prompt)
+        fewshot_text = query_obj.build_prompt(sep, system_prompt)
         logger.info("Few-shot prompt used for extraction:\n%s\n", fewshot_text)
         fewshot_enc = pb.encode(fewshot_text, device=cfg.device)
         task_vec = extractor.extract(fewshot_enc, separator_text=sep)

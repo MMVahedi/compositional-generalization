@@ -90,7 +90,7 @@ def main():
     # Baseline few-shot generation using the last fewshot_enc we created during extraction; if not present fall back to building one.
     # For simplicity, build a fewshot from the first group.
     first_query_obj = list(group_demos(demos, group_size=NUM_SHOTS + 1, tokenizer=pb.tokenizer))[0]
-    fewshot_text = build_fewshot_prompt(first_query_obj.demonstrations, first_query_obj.query_demo.input, sep, system_prompt=system_prompt)
+    fewshot_text = first_query_obj.build_prompt(sep, system_prompt)
     fewshot_enc = pb.encode(fewshot_text, device=device)
     base_few_text = generate_text(model, tokenizer, fewshot_enc)
     base_text = generate_text(model, tokenizer, query_enc)
