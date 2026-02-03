@@ -21,7 +21,6 @@ def extract_task_vectors(
     system_prompt: str,
     num_shots: int,
 ) -> TaskVector:
-    from prompt_utils import build_fewshot_prompt
     from demo_utils import group_demos
     import logging
 
