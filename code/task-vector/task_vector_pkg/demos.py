@@ -9,7 +9,7 @@ from task_vector_pkg.query import Query
 def get_demo_pairs(demos_path: str | None = None) -> List[DemoPair]:
     # Load demo pairs from a JSON file.
     if demos_path is None:
-        demos_path = os.path.join(os.path.dirname(__file__), "demos.json")
+        demos_path = os.path.join(os.path.dirname(__file__), "..", "..", "..", "dataset", "demos.json")
 
     with open(demos_path, "r", encoding="utf-8") as f:
         data = json.load(f)
