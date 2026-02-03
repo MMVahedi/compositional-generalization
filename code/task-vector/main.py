@@ -31,6 +31,7 @@ SYSTEM_PROMPT = None
 TEMPERATURE = None
 TOP_K = None
 TOP_P = None
+NUM_SHOTS = None
 
 
 def build_fewshot_prompt(pairs: Sequence[DemoPair], query_x: str, sep: str, system_prompt: str | None = None) -> str:
@@ -62,7 +63,7 @@ def load_config(config_path: str) -> None:
     with open(config_path, 'r') as f:
         config = json.load(f)
 
-    global MAX_TOKENS, BLOCK_IDX, ALPHA, AVERAGE_SEPARATORS, NORMALIZE, SYSTEM_PROMPT, TEMPERATURE, TOP_K, TOP_P
+    global MAX_TOKENS, BLOCK_IDX, ALPHA, AVERAGE_SEPARATORS, NORMALIZE, SYSTEM_PROMPT, TEMPERATURE, TOP_K, TOP_P, NUM_SHOTS
     MAX_TOKENS = config['max_tokens']
     BLOCK_IDX = config['block_idx']
     ALPHA = config['alpha']
@@ -72,6 +73,7 @@ def load_config(config_path: str) -> None:
     TEMPERATURE = config['temperature']
     TOP_K = config['top_k']
     TOP_P = config['top_p']
+    NUM_SHOTS = config.get('num_shots', 3)
 
 
 def prepare_environment(model_source: str, local_files_only: bool = True) -> None:
@@ -118,8 +120,8 @@ def get_demo_pairs(demos_path: str | None = None) -> List[DemoPair]:
             raise ValueError(f"Unsupported demo entry format: {item}. Expected dict with 'input', 'output', 'id', 'meta'.")
     return pairs
 
-def group_demos(demos: Sequence[DemoPair], group_size: int = 4):
-    """Yield groups of group_size. Each group of 4 is 3 shots + 1 query (last item is query)."""
+def group_demos(demos: Sequence[DemoPair], group_size: int):
+    """Yield groups of group_size. Each group is (group_size-1) shots + 1 query (last item is query)."""
     n = len(demos) // group_size
     for i in range(n):
         start = i * group_size
@@ -135,10 +137,11 @@ def extract_task_vectors(
     demos: Sequence[DemoPair],
     sep: str,
     system_prompt: str,
+    num_shots: int,
 ) -> TaskVector:
     extractor = TaskVectorExtractor(model, cfg)
     task_vectors = []
-    for shots, query in group_demos(demos, group_size=4):
+    for shots, query in group_demos(demos, group_size=num_shots + 1):
         fewshot_text = build_fewshot_prompt(shots, query, sep, system_prompt=system_prompt)
         logger.info("Few-shot prompt used for extraction:\n%s\n", fewshot_text)
         fewshot_enc = pb.encode(fewshot_text, device=cfg.device)
@@ -229,7 +232,7 @@ def main():
 
     cfg = TaskVectorConfig(layer_idx=BLOCK_IDX, average_separators=AVERAGE_SEPARATORS, normalize=NORMALIZE, alpha=ALPHA, device=device)
 
-    avg_task_vector = extract_task_vectors(model, cfg, pb, demos, sep, system_prompt)
+    avg_task_vector = extract_task_vectors(model, cfg, pb, demos, sep, system_prompt, NUM_SHOTS)
 
     # Query prompt
     query_text = build_query_prompt(args.query, sep, system_prompt=system_prompt)
@@ -241,8 +244,8 @@ def main():
 
     # Baseline few-shot generation using the last fewshot_enc we created during extraction; if not present fall back to building one.
     # For simplicity, build a fewshot from the first group.
-    first_shots = list(group_demos(demos, group_size=4))[0][0]
-    fewshot_text = build_fewshot_prompt(first_shots, demos[3].input, sep, system_prompt=system_prompt)
+    first_shots, first_query = list(group_demos(demos, group_size=NUM_SHOTS + 1))[0]
+    fewshot_text = build_fewshot_prompt(first_shots, first_query, sep, system_prompt=system_prompt)
     fewshot_enc = pb.encode(fewshot_text, device=device)
     base_few_text = generate_text(model, tokenizer, fewshot_enc)
     base_text = generate_text(model, tokenizer, query_enc)
