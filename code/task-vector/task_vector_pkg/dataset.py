@@ -1,5 +1,6 @@
 from typing import List
 import json
+import itertools
 
 from coverage.demontration_pair import DemoPair
 from task_vector_pkg.query import Query
@@ -28,16 +29,8 @@ class Dataset:
             "coverage_degree": dataset.coverage_degree,
             "queries": [
                 {
-                    "demonstrations": [
-                        {"input": demo.input, "output": demo.output, "id": demo.id, "meta": demo.meta}
-                        for demo in query.demonstrations
-                    ],
-                    "query_demo": {
-                        "input": query.query_demo.input,
-                        "output": query.query_demo.output,
-                        "id": query.query_demo.id,
-                        "meta": query.query_demo.meta
-                    }
+                    "demonstrations": [DemoPair.to_dict(demo) for demo in query.demonstrations],
+                    "query_demo": DemoPair.to_dict(query.query_demo)
                 }
                 for query in dataset.queries
             ]
@@ -54,21 +47,8 @@ class Dataset:
         coverage_degree = data["coverage_degree"]
         queries = []
         for q_data in data["queries"]:
-            demonstrations = [
-                DemoPair(
-                    input=d["input"],
-                    output=d["output"],
-                    id=d["id"],
-                    meta=d["meta"]
-                )
-                for d in q_data["demonstrations"]
-            ]
-            query_demo = DemoPair(
-                input=q_data["query_demo"]["input"],
-                output=q_data["query_demo"]["output"],
-                id=q_data["query_demo"]["id"],
-                meta=q_data["query_demo"]["meta"]
-            )
+            demonstrations = [DemoPair.from_dict(d) for d in q_data["demonstrations"]]
+            query_demo = DemoPair.from_dict(q_data["query_demo"])
             queries.append(Query(demonstrations, query_demo))
         
         return Dataset(queries, coverage_degree)

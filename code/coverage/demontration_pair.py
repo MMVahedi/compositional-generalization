@@ -27,3 +27,23 @@ class DemoPair:
     @property
     def coverage_degree(self):
         return len(self.covered_demos())
+    
+    @staticmethod
+    def to_dict(demo: 'DemoPair') -> dict:
+        """Convert DemoPair to dictionary."""
+        return {
+            "input": demo.input,
+            "output": demo.output,
+            "id": demo.id,
+            "meta": demo.meta
+        }
+
+    @staticmethod
+    def from_dict(data: dict) -> 'DemoPair':
+        """Create DemoPair from dictionary."""
+        return DemoPair(
+            input=data["input"],
+            output=data["output"],
+            id=data["id"],
+            meta=data["meta"]
+        )
