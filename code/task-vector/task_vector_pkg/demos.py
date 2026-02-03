@@ -3,7 +3,7 @@ import json
 from typing import List, Sequence
 
 from coverage.demontration_pair import DemoPair
-from query import Query
+from task_vector_pkg.query import Query
 
 
 def get_demo_pairs(demos_path: str | None = None) -> List[DemoPair]:

@@ -12,11 +12,10 @@ from icl_task_vectors import (
     choose_backend,
 )
 
-from config_loader import load_config, BLOCK_IDX, ALPHA, AVERAGE_SEPARATORS, NORMALIZE, SYSTEM_PROMPT, NUM_SHOTS
-from prompt_utils import build_query_prompt
-from demo_utils import get_demo_pairs, group_demos
-from task_vector_utils import generate_text, install_hooks_and_generate
-from task_vector_builder import TaskVectorBuilder
+from task_vector_pkg.config import load_config, BLOCK_IDX, ALPHA, AVERAGE_SEPARATORS, NORMALIZE, SYSTEM_PROMPT, NUM_SHOTS
+from task_vector_pkg.prompts import build_query_prompt
+from task_vector_pkg.demos import get_demo_pairs, group_demos
+from task_vector_pkg.task_vector import TaskVectorBuilder
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format="%(message)s")

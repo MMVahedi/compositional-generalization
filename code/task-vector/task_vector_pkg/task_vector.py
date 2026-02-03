@@ -2,7 +2,7 @@ from typing import List
 import torch
 
 from icl_task_vectors import TaskVectorExtractor, TaskVector
-from query import Query
+from task_vector_pkg.query import Query
 
 
 class TaskVectorBuilder:

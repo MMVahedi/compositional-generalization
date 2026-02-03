@@ -1,8 +1,8 @@
 from typing import List
-import itertools
+import json
 
 from coverage.demontration_pair import DemoPair
-from query import Query
+from task_vector_pkg.query import Query
 
 
 class Dataset:
@@ -20,6 +20,58 @@ class Dataset:
 
     def __repr__(self):
         return f"Dataset(coverage_degree={self.coverage_degree}, num_queries={len(self.queries)})"
+
+    @staticmethod
+    def export_to_file(dataset, filepath: str):
+        """Export the dataset to a JSON file."""
+        data = {
+            "coverage_degree": dataset.coverage_degree,
+            "queries": [
+                {
+                    "demonstrations": [
+                        {"input": demo.input, "output": demo.output, "id": demo.id, "meta": demo.meta}
+                        for demo in query.demonstrations
+                    ],
+                    "query_demo": {
+                        "input": query.query_demo.input,
+                        "output": query.query_demo.output,
+                        "id": query.query_demo.id,
+                        "meta": query.query_demo.meta
+                    }
+                }
+                for query in dataset.queries
+            ]
+        }
+        with open(filepath, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+
+    @staticmethod
+    def from_file(filepath: str):
+        """Import a dataset from a JSON file."""
+        with open(filepath, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        coverage_degree = data["coverage_degree"]
+        queries = []
+        for q_data in data["queries"]:
+            demonstrations = [
+                DemoPair(
+                    input=d["input"],
+                    output=d["output"],
+                    id=d["id"],
+                    meta=d["meta"]
+                )
+                for d in q_data["demonstrations"]
+            ]
+            query_demo = DemoPair(
+                input=q_data["query_demo"]["input"],
+                output=q_data["query_demo"]["output"],
+                id=q_data["query_demo"]["id"],
+                meta=q_data["query_demo"]["meta"]
+            )
+            queries.append(Query(demonstrations, query_demo))
+        
+        return Dataset(queries, coverage_degree)
 
 
 class DatasetBuilder:
