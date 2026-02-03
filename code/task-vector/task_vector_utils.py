@@ -1,3 +1,4 @@
+from coverage.demontration_pair import DemoPair
 import torch
 from typing import Sequence
 
@@ -7,7 +8,6 @@ from icl_task_vectors import (
     TaskVector,
     TaskVectorExtractor,
 )
-from query import Query
 
 from config_loader import MAX_TOKENS, TEMPERATURE, TOP_K, TOP_P
 
