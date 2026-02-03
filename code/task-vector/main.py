@@ -8,7 +8,6 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from icl_task_vectors import (
     PromptBuilder,
     TaskVectorConfig,
-    TaskVector,
     Injector,
     choose_backend,
 )
