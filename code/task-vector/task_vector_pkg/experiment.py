@@ -74,9 +74,9 @@ class Experiment:
             injected_output = self._generate_text(query_enc, tokenizer)
             
             # Validate results
-            expected = query.query_demo.output.strip()
-            baseline_correct = baseline_output.strip() == expected
-            injected_correct = injected_output.strip() == expected
+            expected = query.query_demo.output
+            baseline_correct = self.evaluate_output(baseline_output, expected)
+            injected_correct = self.evaluate_output(injected_output, expected)
             
             if baseline_correct:
                 correct_baseline += 1
@@ -128,6 +128,10 @@ class Experiment:
             pad_token_id=tokenizer.eos_token_id,
         )
         return tokenizer.decode(out[0], skip_special_tokens=True)
+
+    def evaluate_output(self, model_output: str, ground_truth: str) -> bool:
+        """Evaluate if the model output matches the ground truth."""
+        return model_output.strip() == ground_truth.strip()
 
     def __repr__(self):
         return f"Experiment(dataset={self.dataset}, model={type(self.model).__name__}, configs={self.configs})"
