@@ -5,12 +5,13 @@ import torch
 from icl_task_vectors import choose_backend, Injector, TaskVectorConfig
 from task_vector_pkg.dataset import Dataset
 from task_vector_pkg.task_vector import TaskVectorBuilder
+from task_vector_pkg.config import Config
 
 
 class Experiment:
     """Encapsulates all components needed for a task vector experiment."""
 
-    def __init__(self, dataset: Dataset, model: Any, configs: Dict[str, Any], prompt_builder: Any):
+    def __init__(self, dataset: Dataset, model: Any, configs: Config, prompt_builder: Any):
         self.dataset = dataset
         self.model = model
         self.configs = configs
@@ -18,10 +19,10 @@ class Experiment:
         
         # Create TaskVectorConfig from configs
         self.cfg = TaskVectorConfig(
-            layer_idx=configs.get('block_idx', [9, 10, 11, 12]),
-            average_separators=configs.get('average_separators', False),
-            normalize=configs.get('normalize', None),
-            alpha=configs.get('alpha', 1.0),
+            layer_idx=configs.block_idx,
+            average_separators=configs.average_separators,
+            normalize=configs.normalize,
+            alpha=configs.alpha,
             device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         )
         
@@ -31,8 +32,8 @@ class Experiment:
     def run(self) -> Dict[str, Any]:
         """Run the experiment: extract task vector, evaluate on queries, and report results."""
         # Build task vector from dataset
-        sep = self.configs.get('sep', '->')
-        system_prompt = self.configs.get('system_prompt', '')
+        sep = self.configs.sep
+        system_prompt = self.configs.system_prompt
         task_vector = self.task_vector_builder.build_task_vector(self.dataset.queries, sep, system_prompt)
         
         # Setup for inference
@@ -110,10 +111,10 @@ class Experiment:
 
     def _generate_text(self, enc, tokenizer):
         """Generate text from encoded input."""
-        max_tokens = self.configs.get('max_tokens', 15)
-        temperature = self.configs.get('temperature', 0.0)
-        top_k = self.configs.get('top_k', 1)
-        top_p = self.configs.get('top_p', 1.0)
+        max_tokens = self.configs.max_tokens
+        temperature = self.configs.temperature
+        top_k = self.configs.top_k
+        top_p = self.configs.top_p
         
         out = self.model.generate(
             input_ids=enc.input_ids,
@@ -129,4 +130,4 @@ class Experiment:
         return tokenizer.decode(out[0], skip_special_tokens=True)
 
     def __repr__(self):
-        return f"Experiment(dataset={self.dataset}, model={type(self.model).__name__}, configs_keys={list(self.configs.keys())})"
+        return f"Experiment(dataset={self.dataset}, model={type(self.model).__name__}, configs={self.configs})"

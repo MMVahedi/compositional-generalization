@@ -1,30 +1,22 @@
 import json
 
-# Global config variables
-MAX_TOKENS = None
-BLOCK_IDX = None
-ALPHA = None
-AVERAGE_SEPARATORS = None
-NORMALIZE = None
-SYSTEM_PROMPT = None
-TEMPERATURE = None
-TOP_K = None
-TOP_P = None
-NUM_SHOTS = None
+
+class Config:
+    def __init__(self, max_tokens, block_idx, alpha, average_separators, normalize, system_prompt, temperature, top_k, top_p, num_shots, sep):
+        self.max_tokens = max_tokens
+        self.block_idx = block_idx
+        self.alpha = alpha
+        self.average_separators = average_separators
+        self.normalize = normalize
+        self.system_prompt = system_prompt
+        self.temperature = temperature
+        self.top_k = top_k
+        self.top_p = top_p
+        self.num_shots = num_shots
+        self.sep = sep
 
 
-def load_config(config_path: str) -> None:
+def load_config(config_path: str) -> dict:
     with open(config_path, 'r') as f:
         config = json.load(f)
-
-    global MAX_TOKENS, BLOCK_IDX, ALPHA, AVERAGE_SEPARATORS, NORMALIZE, SYSTEM_PROMPT, TEMPERATURE, TOP_K, TOP_P, NUM_SHOTS
-    MAX_TOKENS = config['max_tokens']
-    BLOCK_IDX = config['block_idx']
-    ALPHA = config['alpha']
-    AVERAGE_SEPARATORS = config['average_separators']
-    NORMALIZE = config['normalize']
-    SYSTEM_PROMPT = config['system_prompt']
-    TEMPERATURE = config['temperature']
-    TOP_K = config['top_k']
-    TOP_P = config['top_p']
-    NUM_SHOTS = config.get('num_shots', 3)
+    return config

@@ -12,10 +12,8 @@ from icl_task_vectors import (
     choose_backend,
 )
 
-from task_vector_pkg.config import load_config, BLOCK_IDX, ALPHA, AVERAGE_SEPARATORS, NORMALIZE, SYSTEM_PROMPT, TEMPERATURE, TOP_K, TOP_P, NUM_SHOTS
-from task_vector_pkg.prompts import build_query_prompt
+from task_vector_pkg.config import Config
 from task_vector_pkg.demos import get_demo_pairs, group_demos
-from task_vector_pkg.task_vector import TaskVectorBuilder
 from task_vector_pkg.dataset import Dataset
 from task_vector_pkg.experiment import Experiment
 
@@ -27,9 +25,31 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
     p.add_argument("--model-dir", type=str, required=True, help="Local directory containing pretrained model/tokenizer")
     p.add_argument("--config", type=str, required=True, help="Path to config file")
-    p.add_argument("--query", type=str, required=True, help="The query input for the task")
     p.add_argument("--sep", type=str, default="->", help="Separator token for prompts (default: '->')")
     return p.parse_args()
+
+
+def load_configs(args: argparse.Namespace) -> Config:
+    config_dict = load_config(args.config)
+    return Config(
+        max_tokens=config_dict['max_tokens'],
+        block_idx=config_dict['block_idx'],
+        alpha=config_dict['alpha'],
+        average_separators=config_dict['average_separators'],
+        normalize=config_dict['normalize'],
+        system_prompt=config_dict['system_prompt'],
+        temperature=config_dict['temperature'],
+        top_k=config_dict['top_k'],
+        top_p=config_dict['top_p'],
+        num_shots=config_dict.get('num_shots', 3),
+        sep=args.sep
+    )
+
+
+def load_dataset(configs: Config, prompt_builder) -> Dataset:
+    demos = get_demo_pairs()
+    queries = list(group_demos(demos, group_size=configs.num_shots + 1, tokenizer=prompt_builder.tokenizer))
+    return Dataset(queries, 0)  # coverage_degree placeholder
 
 
 def prepare_environment(model_source: str, local_files_only: bool = True) -> None:
@@ -58,21 +78,8 @@ def load_model_and_tokenizer(model_source: str, device: str, local_files_only: b
 def main():
     args = parse_args()
 
-    load_config(args.config)
-
-    configs = {
-        'max_tokens': MAX_TOKENS,
-        'block_idx': BLOCK_IDX,
-        'alpha': ALPHA,
-        'average_separators': AVERAGE_SEPARATORS,
-        'normalize': NORMALIZE,
-        'system_prompt': SYSTEM_PROMPT,
-        'temperature': TEMPERATURE,
-        'top_k': TOP_K,
-        'top_p': TOP_P,
-        'num_shots': NUM_SHOTS,
-        'sep': args.sep
-    }
+    # Load configs
+    configs = load_configs(args)
 
     model_source = args.model_dir
     local_files_only = True
@@ -85,20 +92,15 @@ def main():
 
     model, tokenizer = load_model_and_tokenizer(model_source, device, local_files_only=local_files_only)
 
-    sep = args.sep
-    demos = get_demo_pairs()
-    system_prompt = SYSTEM_PROMPT
+    prompt_builder = PromptBuilder(tokenizer, separator_text=configs['sep'])
 
-    prompt_builder = PromptBuilder(tokenizer, separator_text=sep)
+    # Load dataset
+    dataset = load_dataset(configs, prompt_builder)
 
-    cfg = TaskVectorConfig(layer_idx=BLOCK_IDX, average_separators=AVERAGE_SEPARATORS, normalize=NORMALIZE, alpha=ALPHA, device=device)
-
-    queries = list(group_demos(demos, group_size=NUM_SHOTS + 1, tokenizer=prompt_builder.tokenizer))
-    dataset = Dataset(queries, 0)  # coverage_degree placeholder
+    # Create and run experiment
     experiment = Experiment(dataset, model, configs, prompt_builder)
-    
-    # Run the experiment
     results = experiment.run()
+
     logger.info("Experiment results: %s", results)
 
 
