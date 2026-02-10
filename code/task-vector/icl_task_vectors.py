@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import List, Optional, Protocol, Sequence, Tuple, Union
+from dataclasses import dataclass
+from typing import List, Optional, Protocol, Sequence, Union
 
 import torch
 import torch.nn as nn
@@ -14,7 +14,8 @@ import torch.nn as nn
 @dataclass
 class TaskVectorConfig:
     # extraction
-    layer_idx: int = -1                   # which hidden_states index to read (supports negative)
+    # layer_idx may be a single int or a sequence of ints to extract from multiple layers
+    layer_idx: Union[int, Sequence[int]] = -1                   # which hidden_states index to read (supports negative)
     average_separators: bool = False      # False => last separator only; True => mean over all
     normalize: Optional[str] = None       # None | "l2"
 
@@ -25,8 +26,9 @@ class TaskVectorConfig:
 
 @dataclass
 class TaskVector:
-    vector: torch.Tensor                  # [d_model]
-    layer_idx: int
+    vector: torch.Tensor                  # [d_model] or [n_layers, d_model]
+    # layer_idx may be int or sequence[int]
+    layer_idx: Union[int, Sequence[int]]
     separator_text: str
     average_separators: bool
     meta: dict
@@ -103,25 +105,50 @@ class TaskVectorExtractor:
         )
 
         hidden_states = outputs.hidden_states
-        hs = hidden_states[self.cfg.layer_idx]  # [1, T, d_model]
 
-        if self.cfg.average_separators:
-            pos = prompt.separator_positions
+        # Normalize layer indices into a list for uniform handling
+        cfg_layer_idx = self.cfg.layer_idx
+        if isinstance(cfg_layer_idx, int):
+            layer_idxs = [cfg_layer_idx]
         else:
-            pos = [prompt.separator_positions[-1]]
+            layer_idxs = list(cfg_layer_idx)
 
-        vecs = hs[0, pos, :]        # [k, d_model]
-        v = vecs.mean(dim=0)        # [d_model]
+        n_layers = len(hidden_states)
 
-        if self.cfg.normalize == "l2":
-            v = v / (v.norm(p=2) + 1e-12)
+        # choose separator token positions once (same for all layers)
+        if self.cfg.average_separators:
+            positions = prompt.separator_positions
+        else:
+            positions = [prompt.separator_positions[-1]]
+
+        per_layer_vecs = []
+        resolved_layers = []
+        for li in layer_idxs:
+            ridx = _resolve_layer_index(n_layers, li)
+            resolved_layers.append(ridx)
+            hs_layer = hidden_states[ridx]  # [1, T, d_model]
+            vecs = hs_layer[0, positions, :]  # [k, d_model]
+            v = vecs.mean(dim=0)             # [d_model]
+            if self.cfg.normalize == "l2":
+                v = v / (v.norm(p=2) + 1e-12)
+            per_layer_vecs.append(v)
+
+        # Stack per-layer vectors. If only one layer, return 1D tensor for compatibility.
+        if len(per_layer_vecs) == 1:
+            final_vec = per_layer_vecs[0].detach()
+        else:
+            final_vec = torch.stack(per_layer_vecs, dim=0).detach()  # [n_layers, d_model]
 
         return TaskVector(
-            vector=v.detach(),
-            layer_idx=self.cfg.layer_idx,
+            vector=final_vec,
+            layer_idx=layer_idxs if len(layer_idxs) > 1 else layer_idxs[0],
             separator_text=separator_text,
             average_separators=self.cfg.average_separators,
-            meta={"positions_used": pos, "seq_len": int(prompt.input_ids.shape[-1])},
+            meta={
+                "positions_used": positions,
+                "seq_len": int(prompt.input_ids.shape[-1]),
+                "layers_used": resolved_layers,
+            },
         )
 
 
@@ -175,7 +202,7 @@ def _add_at_position(x: torch.Tensor, position: int, add_vec: torch.Tensor, alph
     v = v.to(device=x.device, dtype=x.dtype)
 
     x = x.clone()  # avoid in-place on activations used elsewhere
-    x[:, position:position + 1, :] = x[:, position:position + 1, :] + alpha * v
+    x[:, position:position + 1, :] = (1-alpha)*x[:, position:position + 1, :] + alpha * v
     return x
 
 
@@ -262,22 +289,46 @@ class Injector:
         inject_position: int,
         **forward_kwargs,
     ):
-        add_vec = task_vector.vector.to(self.cfg.device)
-        handle = self.backend.install_hook(
-            model=model,
-            layer_idx=task_vector.layer_idx,
-            position=inject_position,
-            add_vector=add_vec,
-            alpha=self.cfg.alpha,
-        )
+        # Support multiple layer indices and per-layer vectors.
+        # Normalize layer indices and vectors to lists of same length.
+        if isinstance(task_vector.layer_idx, int):
+            layer_idxs = [task_vector.layer_idx]
+        else:
+            layer_idxs = list(task_vector.layer_idx)
+
+        tv = task_vector.vector
+        per_layer_vecs = []
+        if tv.dim() == 1:
+            # same vector for all layers
+            per_layer_vecs = [tv] * len(layer_idxs)
+        elif tv.dim() == 2:
+            if tv.shape[0] != len(layer_idxs):
+                raise ValueError("Number of per-layer vectors does not match number of layer indices")
+            per_layer_vecs = [tv[i] for i in range(tv.shape[0])]
+        else:
+            raise ValueError("Unsupported task_vector.vector shape for multi-layer injection")
+
+        handles = []
         try:
+            for li, v in zip(layer_idxs, per_layer_vecs):
+                add_vec = v.to(self.cfg.device)
+                h = self.backend.install_hook(
+                    model=model,
+                    layer_idx=li,
+                    position=inject_position,
+                    add_vector=add_vec,
+                    alpha=self.cfg.alpha,
+                )
+                handles.append(h)
+
             return model(
                 input_ids=prompt.input_ids,
                 attention_mask=prompt.attention_mask,
                 **forward_kwargs,
             )
         finally:
-            handle.remove()
+            for h in handles:
+                h.remove()
 
 
 # =========================
