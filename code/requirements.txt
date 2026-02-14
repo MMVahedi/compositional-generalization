@@ -1,0 +1,15 @@
+# Core ML libraries
+torch>=2.0.0
+transformers>=4.30.0
+
+# Data processing
+numpy>=1.24.0
+networkx>=3.0
+
+# Utilities
+tqdm>=4.65.0
+requests>=2.31.0
+
+# API clients
+openai>=1.0.0
+python-dotenv>=1.0.0
