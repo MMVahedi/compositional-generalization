@@ -20,6 +20,7 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
     p.add_argument("--model-dir", type=str, required=True, help="Local directory containing pretrained model/tokenizer")
     p.add_argument("--config", type=str, required=True, help="Path to config file")
+    p.add_argument("--demos-path", type=str, required=True, help="Path to demos JSON file")
     p.add_argument("--sep", type=str, default="->", help="Separator token for prompts (default: '->')")
     return p.parse_args()
 
@@ -41,8 +42,8 @@ def load_configs(args: argparse.Namespace) -> Config:
     )
 
 
-def load_dataset(configs: Config, prompt_builder) -> Dataset:
-    demos = get_demo_pairs()
+def load_dataset(configs: Config, prompt_builder, demos_path: str) -> Dataset:
+    demos = get_demo_pairs(demos_path)
     queries = list(group_demos(demos, group_size=configs.num_shots + 1, tokenizer=prompt_builder.tokenizer))
     return Dataset(queries, 0)  # coverage_degree placeholder
 
@@ -90,7 +91,7 @@ def main():
     prompt_builder = PromptBuilder(tokenizer, separator_text=configs.sep)
 
     # Load dataset
-    dataset = load_dataset(configs, prompt_builder)
+    dataset = load_dataset(configs, prompt_builder, args.demos_path)
 
     # Create and run experiment
     experiment = Experiment(dataset, model, configs, prompt_builder)
