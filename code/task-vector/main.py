@@ -9,7 +9,7 @@ from icl_task_vectors import PromptBuilder
 
 from task_vector_pkg.config import Config, load_config
 from task_vector_pkg.demos import get_demo_pairs, group_demos
-from task_vector_pkg.dataset import Dataset
+from task_vector_pkg.dataset import DatasetBuilder
 from task_vector_pkg.experiment import Experiment
 
 logger = logging.getLogger(__name__)
@@ -40,12 +40,6 @@ def load_configs(args: argparse.Namespace) -> Config:
         num_shots=config_dict.get('num_shots', 3),
         sep=args.sep
     )
-
-
-def load_dataset(configs: Config, prompt_builder, demos_path: str) -> Dataset:
-    demos = get_demo_pairs(demos_path)
-    queries = list(group_demos(demos, group_size=configs.num_shots + 1, tokenizer=prompt_builder.tokenizer))
-    return Dataset(queries, 0)  # coverage_degree placeholder
 
 
 def prepare_environment(model_source: str, local_files_only: bool = True) -> None:
@@ -90,8 +84,10 @@ def main():
 
     prompt_builder = PromptBuilder(tokenizer, separator_text=configs.sep)
 
-    # Load dataset
-    dataset = load_dataset(configs, prompt_builder, args.demos_path)
+    # Load demos
+    demos = get_demo_pairs(args.demos_path)
+    builder = DatasetBuilder(demos, num_shots=configs.num_shots)
+    dataset = builder.get_dataset(coverage_degree=1)
 
     # Create and run experiment
     experiment = Experiment(dataset, model, configs, prompt_builder)
