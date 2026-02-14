@@ -2,13 +2,14 @@ import os
 import argparse
 import logging
 
+from coverage.demonstration_pair import DemoPair
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from icl_task_vectors import PromptBuilder
 
 from task_vector_pkg.config import Config, load_config
-from task_vector_pkg.demos import get_demo_pairs, group_demos
+from task_vector_pkg.demos import get_demo_pairs
 from task_vector_pkg.dataset import DatasetBuilder
 from task_vector_pkg.experiment import Experiment
 
@@ -85,7 +86,8 @@ def main():
     prompt_builder = PromptBuilder(tokenizer, separator_text=configs.sep)
 
     # Load demos
-    demos = get_demo_pairs(args.demos_path)
+    get_demo_pairs(args.demos_path)
+    demos = DemoPair.all_instances
     builder = DatasetBuilder(demos, num_shots=configs.num_shots)
     dataset = builder.get_dataset(coverage_degree=1)
 

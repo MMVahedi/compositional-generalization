@@ -10,26 +10,9 @@ def get_demo_pairs(demos_path: str) -> List[DemoPair]:
     with open(demos_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    pairs: List[DemoPair] = []
-    for item in data:
+    items = data["dataset"]
+    for item in items:
         if isinstance(item, dict):
-            # Format: {"input": ..., "output": ..., "id": ..., "meta": {}}
-            pairs.append(DemoPair(
-                input=item['input'],
-                output=item['output'],
-                id=item['id'],
-                meta=item.get('meta', {})
-            ))
+            DemoPair.from_dict(item)
         else:
             raise ValueError(f"Unsupported demo entry format: {item}. Expected dict with 'input', 'output', 'id', 'meta'.")
-    return pairs
-
-
-def group_demos(demos: Sequence[DemoPair], group_size: int, tokenizer=None):
-    """Yield Query objects, each with (group_size-1) shots + 1 query."""
-    n = len(demos) // group_size
-    for i in range(n):
-        start = i * group_size
-        shots = demos[start : start + (group_size - 1)]
-        query_demo = demos[start + (group_size - 1)]
-        yield Query(shots, query_demo)
