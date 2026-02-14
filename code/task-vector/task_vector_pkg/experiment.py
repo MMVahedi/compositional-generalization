@@ -1,6 +1,4 @@
-from typing import Any, Dict, List
-import torch
-from typing import Any, Dict, List
+from typing import Any, Dict
 import torch
 from icl_task_vectors import choose_backend, Injector, TaskVectorConfig
 from task_vector_pkg.dataset import Dataset
@@ -101,7 +99,7 @@ class Experiment:
             'results': results
         }
         
-        print(f"Experiment Results:")
+        print("Experiment Results:")
         print(f"Total Queries: {report['total_queries']}")
         print(f"Baseline Accuracy: {report['baseline_accuracy']:.2%}")
         print(f"Injected Accuracy: {report['injected_accuracy']:.2%}")

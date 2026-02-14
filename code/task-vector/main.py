@@ -5,14 +5,9 @@ import logging
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from icl_task_vectors import (
-    PromptBuilder,
-    TaskVectorConfig,
-    Injector,
-    choose_backend,
-)
+from icl_task_vectors import PromptBuilder
 
-from task_vector_pkg.config import Config
+from task_vector_pkg.config import Config, load_config
 from task_vector_pkg.demos import get_demo_pairs, group_demos
 from task_vector_pkg.dataset import Dataset
 from task_vector_pkg.experiment import Experiment
@@ -92,7 +87,7 @@ def main():
 
     model, tokenizer = load_model_and_tokenizer(model_source, device, local_files_only=local_files_only)
 
-    prompt_builder = PromptBuilder(tokenizer, separator_text=configs['sep'])
+    prompt_builder = PromptBuilder(tokenizer, separator_text=configs.sep)
 
     # Load dataset
     dataset = load_dataset(configs, prompt_builder)
