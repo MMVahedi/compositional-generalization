@@ -1,3 +1,4 @@
 .gitconfig
 .obsidian
 __pycache__/
+/code/ai-reponse/.env
