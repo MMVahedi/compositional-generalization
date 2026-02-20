@@ -1,5 +1,4 @@
 from typing import List
-
 from coverage.demonstration_pair import DemoPair
 
 
@@ -16,12 +15,8 @@ class Query:
     
     @property
     def coverage_degree(self) -> int:
-        query_covered_demos = self.query_demo.covered_demos
-        counter = 0
-        for demo in query_covered_demos:
-            if demo in self.demonstrations:
-                counter += 1
-        return counter
+        from coverage.simple.determine_coverage import max_coverage_degree_pair_substitution_wrapper
+        return max_coverage_degree_pair_substitution_wrapper(self)
 
     def build_prompt(self, sep: str, system_prompt: str | None = None) -> str:
         """Build the few-shot prompt from demonstrations and query."""

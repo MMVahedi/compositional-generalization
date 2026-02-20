@@ -1,6 +1,6 @@
 from typing import Sequence
 
-from coverage.demontration_pair import DemoPair
+from coverage.demonstration_pair import DemoPair
 
 
 def build_fewshot_prompt(pairs: Sequence[DemoPair], query_x: str, sep: str, system_prompt: str | None = None) -> str:

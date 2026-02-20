@@ -1,5 +1,4 @@
 from typing import List, Dict, Any
-
 class DemoPair:
     """Representation of a single demonstration pair."""
     all_instances: List['DemoPair'] = []
@@ -17,16 +16,6 @@ class DemoPair:
             if instance.id == id:
                 return instance
         raise ValueError(f"No DemoPair found with id {id}")
-
-    @property
-    def covered_demos(self) -> List['DemoPair']:
-        """Get all DemoPair instances that are covered by this demo's coverage graph."""
-        covered_ids = self.meta.get('coverage', [])
-        return [DemoPair.get_by_id(id) for id in covered_ids]
-    
-    @property
-    def coverage_degree(self):
-        return len(self.covered_demos())
     
     @staticmethod
     def to_dict(demo: 'DemoPair') -> dict:

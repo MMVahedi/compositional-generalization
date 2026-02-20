@@ -2,19 +2,15 @@ import os
 import argparse
 import logging
 
+from coverage.demonstration_pair import DemoPair
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from icl_task_vectors import (
-    PromptBuilder,
-    TaskVectorConfig,
-    Injector,
-    choose_backend,
-)
+from icl_task_vectors import PromptBuilder
 
-from task_vector_pkg.config import Config
-from task_vector_pkg.demos import get_demo_pairs, group_demos
-from task_vector_pkg.dataset import Dataset
+from task_vector_pkg.config import Config, load_config
+from task_vector_pkg.demos import get_demo_pairs
+from task_vector_pkg.dataset import DatasetBuilder
 from task_vector_pkg.experiment import Experiment
 
 logger = logging.getLogger(__name__)
@@ -25,6 +21,7 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
     p.add_argument("--model-dir", type=str, required=True, help="Local directory containing pretrained model/tokenizer")
     p.add_argument("--config", type=str, required=True, help="Path to config file")
+    p.add_argument("--demos-path", type=str, required=True, help="Path to demos JSON file")
     p.add_argument("--sep", type=str, default="->", help="Separator token for prompts (default: '->')")
     return p.parse_args()
 
@@ -44,12 +41,6 @@ def load_configs(args: argparse.Namespace) -> Config:
         num_shots=config_dict.get('num_shots', 3),
         sep=args.sep
     )
-
-
-def load_dataset(configs: Config, prompt_builder) -> Dataset:
-    demos = get_demo_pairs()
-    queries = list(group_demos(demos, group_size=configs.num_shots + 1, tokenizer=prompt_builder.tokenizer))
-    return Dataset(queries, 0)  # coverage_degree placeholder
 
 
 def prepare_environment(model_source: str, local_files_only: bool = True) -> None:
@@ -92,10 +83,13 @@ def main():
 
     model, tokenizer = load_model_and_tokenizer(model_source, device, local_files_only=local_files_only)
 
-    prompt_builder = PromptBuilder(tokenizer, separator_text=configs['sep'])
+    prompt_builder = PromptBuilder(tokenizer, separator_text=configs.sep)
 
-    # Load dataset
-    dataset = load_dataset(configs, prompt_builder)
+    # Load demos
+    get_demo_pairs(args.demos_path)
+    demos = DemoPair.all_instances
+    builder = DatasetBuilder(demos, num_shots=configs.num_shots)
+    dataset = builder.get_dataset(coverage_degree=1)
 
     # Create and run experiment
     experiment = Experiment(dataset, model, configs, prompt_builder)

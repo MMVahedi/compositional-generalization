@@ -1,4 +1,5 @@
 from __future__ import annotations
+import os
 from dataclasses import dataclass
 from typing import Optional, Dict
 
@@ -6,7 +7,8 @@ from openai import OpenAI
 
 from metis_bot import MetisBotClient
 
-
+from dotenv import load_dotenv
+load_dotenv()
 # ------------------ model spec ------------------
 
 @dataclass(frozen=True)
@@ -131,8 +133,7 @@ class MultiLLM:
 # ------------------ usage ------------------
 
 if __name__ == "__main__":
-    METIS_API_KEY = "tpsg-SqeTeqoHXs8MHgqdQ7ts0GdE5lxzTSe"
-
+    METIS_API_KEY = os.environ["METIS_API_KEY"]
     llm = MultiLLM(METIS_API_KEY)
     models = llm.register_models()
 
