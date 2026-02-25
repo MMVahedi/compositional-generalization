@@ -2,7 +2,7 @@ import os
 import argparse
 import logging
 
-from coverage.demonstration_pair import DemoPair
+from code.dataset.demonstration_pair import DemoPair
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 

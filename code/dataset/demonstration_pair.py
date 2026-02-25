@@ -1,4 +1,6 @@
 from typing import List, Dict, Any
+import json
+
 class DemoPair:
     """Representation of a single demonstration pair."""
     all_instances: List['DemoPair'] = []
@@ -36,3 +38,16 @@ class DemoPair:
             id=data["id"],
             meta=data["meta"]
         )
+
+    @staticmethod
+    def load_demo_pairs(file_path: str) -> List['DemoPair']:
+        """Load demo pairs from a JSON file."""
+        with open(file_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        items = data["dataset"]
+        for item in items:
+            if isinstance(item, dict):
+                DemoPair.from_dict(item)
+            else:
+                raise ValueError(f"Unsupported demo entry format: {item}. Expected dict with 'input', 'output', 'id', 'meta'.")

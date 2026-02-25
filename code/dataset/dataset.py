@@ -1,16 +1,14 @@
 from typing import List
 import json
 import itertools
-
-from coverage.demonstration_pair import DemoPair
-from task_vector_pkg.query import Query
-
+from dataset.query import Query
+from dataset.demonstration_pair import DemoPair
 
 class Dataset:
     """A dataset containing queries with a specific coverage degree."""
 
     def __init__(self, queries: List[Query], coverage_degree: int):
-        self.queries = queries
+        self.queries: List[Query] = queries
         self.coverage_degree = coverage_degree
 
     def __len__(self):
@@ -23,7 +21,7 @@ class Dataset:
         return f"Dataset(coverage_degree={self.coverage_degree}, num_queries={len(self.queries)})"
 
     @staticmethod
-    def export_to_file(dataset, filepath: str):
+    def export_to_file(dataset: 'Dataset', filepath: str):
         """Export the dataset to a JSON file."""
         data = {
             "coverage_degree": dataset.coverage_degree,

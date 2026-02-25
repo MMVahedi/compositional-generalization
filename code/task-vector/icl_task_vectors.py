@@ -7,6 +7,48 @@ import torch
 import torch.nn as nn
 
 
+
+from dataclasses import dataclass
+from typing import List, Optional, Union
+
+import torch
+import torch.nn as nn
+
+@dataclass
+class EncodedPrompt:
+    input_ids: torch.Tensor               # [1, T]
+    attention_mask: Optional[torch.Tensor]
+    separator_positions: List[int]        # token indices where we consider the "separator embedding"
+
+
+class PromptBuilder:
+    """
+    Locates separator occurrences robustly even when separator_text is multi-token.
+    We define the separator position as the *last token* of the separator subsequence.
+    """
+    def __init__(self, tokenizer, separator_text: str):
+        self.tokenizer = tokenizer
+        self.separator_text = separator_text
+        self.sep_token_ids = tokenizer.encode(separator_text, add_special_tokens=False)
+        if len(self.sep_token_ids) == 0:
+            raise ValueError("separator_text produced 0 tokens; choose a different separator.")
+
+    def encode(self, text: str, device: Union[str, torch.device] = "cpu") -> EncodedPrompt:
+        enc = self.tokenizer(text, return_tensors="pt", add_special_tokens=False)
+        input_ids = enc["input_ids"].to(device)
+        attention_mask = enc.get("attention_mask", None)
+        if attention_mask is not None:
+            attention_mask = attention_mask.to(device)
+
+        seq = input_ids[0].tolist()
+        starts = find_subsequence_starts(seq, self.sep_token_ids)
+        # Use last token index of the separator subsequence
+        positions = [s + (len(self.sep_token_ids) - 1) for s in starts]
+        return EncodedPrompt(input_ids=input_ids, attention_mask=attention_mask, separator_positions=positions)
+
+
+
+
 # =========================
 # Config + Data containers
 # =========================
@@ -34,12 +76,6 @@ class TaskVector:
     meta: dict
 
 
-@dataclass
-class EncodedPrompt:
-    input_ids: torch.Tensor               # [1, T]
-    attention_mask: Optional[torch.Tensor]
-    separator_positions: List[int]        # token indices where we consider the "separator embedding"
-
 
 # =========================
 # Prompt building (find separator token positions)
@@ -56,31 +92,6 @@ def find_subsequence_starts(sequence: List[int], subseq: List[int]) -> List[int]
             hits.append(i)
     return hits
 
-
-class PromptBuilder:
-    """
-    Locates separator occurrences robustly even when separator_text is multi-token.
-    We define the separator position as the *last token* of the separator subsequence.
-    """
-    def __init__(self, tokenizer, separator_text: str):
-        self.tokenizer = tokenizer
-        self.separator_text = separator_text
-        self.sep_token_ids = tokenizer.encode(separator_text, add_special_tokens=False)
-        if len(self.sep_token_ids) == 0:
-            raise ValueError("separator_text produced 0 tokens; choose a different separator.")
-
-    def encode(self, text: str, device: Union[str, torch.device] = "cpu") -> EncodedPrompt:
-        enc = self.tokenizer(text, return_tensors="pt", add_special_tokens=False)
-        input_ids = enc["input_ids"].to(device)
-        attention_mask = enc.get("attention_mask", None)
-        if attention_mask is not None:
-            attention_mask = attention_mask.to(device)
-
-        seq = input_ids[0].tolist()
-        starts = find_subsequence_starts(seq, self.sep_token_ids)
-        # Use last token index of the separator subsequence
-        positions = [s + (len(self.sep_token_ids) - 1) for s in starts]
-        return EncodedPrompt(input_ids=input_ids, attention_mask=attention_mask, separator_positions=positions)
 
 
 # =========================
