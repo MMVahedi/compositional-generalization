@@ -10,13 +10,14 @@ class TaskVectorPrompt:
     We define the separator position as the *last token* of the separator subsequence.
     """
 
-    def __init__(self, prompt: FewShotPrompt, tokenizer):
+    def __init__(self, prompt: FewShotPrompt, tokenizer, device: Union[str, torch.device] = "cpu"):
         self.prompt = prompt
         self.tokenizer = tokenizer
+        self.device = device
         self.sep_token_ids = tokenizer.encode(prompt.separator, add_special_tokens=False)
         if len(self.sep_token_ids) == 0:
             raise ValueError("separator_text produced 0 tokens; choose a different separator.")
-        self.input_ids, self.attention_mask, self.separator_positions = self._encode(self.prompt.build())
+        self.input_ids, self.attention_mask, self.separator_positions = self._encode(self.prompt.build(), device=self.device)
 
     @staticmethod
     def find_subsequence_starts(sequence: List[int], subseq: List[int]) -> List[int]:

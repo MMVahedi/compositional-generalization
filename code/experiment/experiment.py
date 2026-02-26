@@ -77,7 +77,11 @@ class TaskVectorExperiment:
         prompts = []
         for idx, query in enumerate(self.dataset.queries):
             few_shot_prompt = FewShotPrompt(query, self.configs.sep, self.configs.system_prompt)
-            task_vector_prompt = TaskVectorPrompt(few_shot_prompt, self.tokenizer)
+            task_vector_prompt = TaskVectorPrompt(
+                few_shot_prompt,
+                self.tokenizer,
+                device=self.task_vector_config.device,
+            )
             prompts.append(task_vector_prompt)
             if (idx + 1) % 100 == 0:
                 logging.debug(f"Created {idx + 1}/{len(self.dataset.queries)} prompts")
