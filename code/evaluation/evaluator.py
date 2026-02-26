@@ -6,10 +6,43 @@ from icl.prompt import FewShotPrompt, ZeroShotPrompt
 class ContainmentEvaluator:
     """Evaluates correctness by checking if response contains the expected result."""
 
+    @staticmethod
+    def _text_after_kth_separator(text: str, separator: str, k: int) -> str | None:
+        if k <= 0:
+            return None
+        pos = -1
+        start = 0
+        for _ in range(k):
+            pos = text.find(separator, start)
+            if pos == -1:
+                return None
+            start = pos + len(separator)
+        return text[start:]
+
+    @staticmethod
+    def _extract_first_number(text: str) -> str | None:
+        match = re.search(r"-?\d+(?:\.\d+)?", text)
+        return match.group(0) if match else None
+
     def is_correct(self, prompt: FewShotPrompt | ZeroShotPrompt, model_response: str) -> bool:
         correct_result = prompt.get_correct_result().strip()
-        response_text = model_response.strip()
-        return correct_result.lower() in response_text.lower()
+
+        shots = prompt.query.number_of_shots if isinstance(prompt, FewShotPrompt) else 0
+        kth_separator = shots + 1
+
+        answer_region = self._text_after_kth_separator(model_response, prompt.separator, kth_separator)
+        if answer_region is None:
+            return False
+
+        pred_num = self._extract_first_number(answer_region)
+        gold_num = self._extract_first_number(correct_result)
+
+        if pred_num is not None and gold_num is not None:
+            return pred_num == gold_num
+
+        pred_token = answer_region.strip().split(",")[0].split()[0] if answer_region.strip() else ""
+        gold_token = correct_result.split(",")[0].split()[0] if correct_result else ""
+        return pred_token.lower() == gold_token.lower()
 
 
 class LLMAssistedEvaluator:
