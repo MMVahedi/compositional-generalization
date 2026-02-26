@@ -1,7 +1,6 @@
 from typing import List
 import logging
 import json
-import itertools
 from dataset.query import Query
 from dataset.demonstration_pair import DemoPair
 from function.function import Function
@@ -57,35 +56,61 @@ class Dataset:
 class DatasetBuilder:
     """Builder for creating all possible Query objects from a list of demo pairs."""
 
-    def __init__(self, function: Function, num_shots: int):
+    def __init__(self, function: Function, num_shots: int, allow_reuse: bool = False):
         self.demos = function.demo_pairs
         self.num_shots = num_shots
-        self.queries = self._build_all_queries()
+        self.allow_reuse = allow_reuse
+        if self.allow_reuse:
+            self.queries = self._build_all_queries_with_reuse()
+        else:
+            self.queries = self._build_all_queries_without_reuse()
 
-    def _build_all_queries(self) -> List[Query]:
-        """Generate all possible Query objects.
+    def _build_all_queries_with_reuse(self) -> List[Query]:
+        """Generate all possible Query objects (original behavior, demos can be reused)."""
+        import itertools
 
-        For each possible query_demo, select combinations of num_shots demonstrations
-        from the remaining demos. Demonstration order is not expanded.
-        """
-        logging.info(f"Building queries with num_shots={self.num_shots} from {len(self.demos)} demos")
+        logging.info(f"Building queries WITH reuse, num_shots={self.num_shots}, demos={len(self.demos)}")
         queries = []
         for query_index in range(len(self.demos)):
             query_demo = self.demos[query_index]
             remaining = [d for i, d in enumerate(self.demos) if i != query_index]
-            
+
             if len(remaining) < self.num_shots:
-                logging.warning(f"Not enough demos for query_index {query_index}: need {self.num_shots}, have {len(remaining)}")
-                continue  # Not enough demos for demonstrations
-            
-            # Generate all combinations of num_shots from remaining
+                continue
+
             for combo in itertools.combinations(remaining, self.num_shots):
                 queries.append(Query(list(combo), query_demo))
-            
-            if (query_index + 1) % 100 == 0:
-                logging.debug(f"Generated queries for {query_index + 1}/{len(self.demos)} query demos (total: {len(queries)} queries)")
+
+        logging.info(f"Built {len(queries)} total queries (with reuse)")
+        return queries
+
+    def _build_all_queries_without_reuse(self) -> List[Query]:
+        """Generate Query objects without reusing demonstrations across queries.
+
+        Each query consumes a disjoint block of (num_shots + 1) demos:
+        - first num_shots demos are used as demonstrations
+        - last demo is used as query_demo
+        """
+        logging.info(f"Building queries with num_shots={self.num_shots} from {len(self.demos)} demos")
+        if self.num_shots <= 0:
+            raise ValueError("num_shots must be greater than 0")
+
+        queries = []
+        block_size = self.num_shots + 1
+        full_blocks = len(self.demos) // block_size
+
+        for block_idx in range(full_blocks):
+            start = block_idx * block_size
+            block = self.demos[start:start + block_size]
+            demonstrations = block[:self.num_shots]
+            query_demo = block[self.num_shots]
+            queries.append(Query(demonstrations, query_demo))
+
+        unused = len(self.demos) - full_blocks * block_size
+        if unused > 0:
+            logging.info(f"Skipped {unused} trailing demos that could not form a full query block")
         
-        logging.info(f"Built {len(queries)} total queries")
+        logging.info(f"Built {len(queries)} total queries (without reuse)")
         return queries
 
     def get_dataset(self, coverage_degree: int) -> Dataset:
