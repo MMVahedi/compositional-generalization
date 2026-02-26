@@ -46,7 +46,7 @@ def main():
     )
 
     builder = DatasetBuilder(function, num_shots=configs.num_shots)
-    dataset = builder.get_dataset(coverage_degree=1)
+    dataset = builder.get_dataset(coverage_degree=args.degree)
 
     # Create and run experiment
     experiment = TaskVectorExperiment(dataset=dataset, model_path=args.model_dir, configs=configs)
