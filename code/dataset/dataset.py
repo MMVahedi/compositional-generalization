@@ -66,8 +66,7 @@ class DatasetBuilder:
         """Generate all possible Query objects.
 
         For each possible query_demo, select combinations of num_shots demonstrations
-        from the remaining demos, and for each combination, generate all permutations
-        to account for different orders.
+        from the remaining demos. Demonstration order is not expanded.
         """
         logging.info(f"Building queries with num_shots={self.num_shots} from {len(self.demos)} demos")
         queries = []
@@ -81,9 +80,7 @@ class DatasetBuilder:
             
             # Generate all combinations of num_shots from remaining
             for combo in itertools.combinations(remaining, self.num_shots):
-                # Generate all permutations of each combination
-                for perm in itertools.permutations(combo):
-                    queries.append(Query(list(perm), query_demo))
+                queries.append(Query(list(combo), query_demo))
             
             if (query_index + 1) % 100 == 0:
                 logging.debug(f"Generated queries for {query_index + 1}/{len(self.demos)} query demos (total: {len(queries)} queries)")
