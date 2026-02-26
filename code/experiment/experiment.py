@@ -174,6 +174,11 @@ class TaskVectorExperiment:
                 pad_token_id=self.tokenizer.eos_token_id,
             )
             response = self.tokenizer.decode(response[0], skip_special_tokens=True)
+
+            if idx % 10 == 0:
+                logging.info(f"[Injected sample {idx}] Prompt:\n{prompt.prompt.build()}")
+                logging.info(f"[Injected sample {idx}] Output:\n{response}")
+
             if self.evaluator.is_correct(prompt.prompt, response):
                 correct_injected += 1
             
@@ -199,6 +204,10 @@ class TaskVectorExperiment:
                 pad_token_id=self.tokenizer.eos_token_id,
             )
             baseline = self.tokenizer.decode(out[0], skip_special_tokens=True)
+
+            if idx % 10 == 0:
+                logging.info(f"[Baseline sample {idx}] Prompt:\n{prompt.prompt.build()}")
+                logging.info(f"[Baseline sample {idx}] Output:\n{baseline}")
             
             if self.evaluator.is_correct(prompt.prompt, baseline):
                 correct_baseline += 1
