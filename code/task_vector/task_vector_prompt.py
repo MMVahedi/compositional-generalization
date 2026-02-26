@@ -18,7 +18,8 @@ class TaskVectorPrompt:
             raise ValueError("separator_text produced 0 tokens; choose a different separator.")
         self.input_ids, self.attention_mask, self.separator_positions = self._encode(self.prompt.build())
 
-    def _find_subsequence_starts(sequence: List[int], subseq: List[int]) -> List[int]:
+    @staticmethod
+    def find_subsequence_starts(sequence: List[int], subseq: List[int]) -> List[int]:
         if len(subseq) == 0 or len(sequence) < len(subseq):
             return []
         hits = []
@@ -36,7 +37,7 @@ class TaskVectorPrompt:
             attention_mask = attention_mask.to(device)
 
         seq = input_ids[0].tolist()
-        starts = self._find_subsequence_starts(seq, self.sep_token_ids)
+        starts = TaskVectorPrompt.find_subsequence_starts(seq, self.sep_token_ids)
         # Use last token index of the separator subsequence
         positions = [s + (len(self.sep_token_ids) - 1) for s in starts]
         return input_ids, attention_mask, positions
