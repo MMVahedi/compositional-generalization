@@ -18,7 +18,7 @@ class Config:
         self.sep = sep
 
     @staticmethod
-    def load_config(config_path: str, sep: Optional[str] = None) -> "Config":
+    def load_config(config_path: str) -> "Config":
         with open(config_path, 'r') as f:
             config = json.load(f)
 
@@ -32,7 +32,8 @@ class Config:
             temperature=config['temperature'],
             top_k=config['top_k'],
             top_p=config['top_p'],
-            num_shots=config.get('num_shots', 3),
+            num_shots=config.get('num_shots'),
+            sep=config.get('sep')
         )
 
 @dataclass
