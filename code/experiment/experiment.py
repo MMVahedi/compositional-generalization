@@ -2,7 +2,7 @@ from typing import Any, Dict, Optional
 import torch
 import torch.nn as nn
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from task_vector.task_vector_injector import (
+from task_vector.injector import (
     InjectorBackend,
     Injector,
     TaskVectorConfig,
@@ -12,8 +12,8 @@ from task_vector.task_vector_injector import (
 )
 from task_vector.task_vector_prompt import TaskVectorPrompt
 from dataset.dataset import Dataset
-from task_vector.task_vector_builder import TaskVectorBuilder
-from task_vector.config import Config
+from task_vector.builder import TaskVectorBuilder
+from task_vector.utils import Config
 from icl.prompt import FewShotPrompt
 from evaluation.evaluator import ContainmentEvaluator
 

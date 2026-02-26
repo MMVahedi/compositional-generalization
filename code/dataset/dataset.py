@@ -3,6 +3,7 @@ import json
 import itertools
 from dataset.query import Query
 from dataset.demonstration_pair import DemoPair
+from function.function import Function
 
 class Dataset:
     """A dataset containing queries with a specific coverage degree."""
@@ -55,8 +56,8 @@ class Dataset:
 class DatasetBuilder:
     """Builder for creating all possible Query objects from a list of demo pairs."""
 
-    def __init__(self, demos: List[DemoPair], num_shots: int):
-        self.demos = demos
+    def __init__(self, function: Function, num_shots: int):
+        self.demos = function.demo_pairs
         self.num_shots = num_shots
         self.queries = self._build_all_queries()
 

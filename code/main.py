@@ -3,6 +3,8 @@ import argparse
 
 from task_vector.utils import Config
 from dataset.dataset import DatasetBuilder
+from function.twohop import generate_two_hop_function
+from experiment.experiment import TaskVectorExperiment
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
@@ -28,19 +30,27 @@ def main():
 
     prepare_environment(args.model_dir, local_files_only=True)
 
-    # Load demos
-    get_demo_pairs(args.demos_path)
-    demos = DemoPair.all_instances
-    builder = DatasetBuilder(demos, num_shots=configs.num_shots)
+    # Create Random Function 
+    x1 = range(1, 10)
+    x2 = range(1, 10)
+    x3 = range(1, 10)
+
+    intermediate = range(1, 10)
+    outputs = range(1, 10)
+
+    function = generate_two_hop_function(
+        x1, x2, x3,
+        intermediate,
+        outputs,
+        seed=42
+    )
+
+    builder = DatasetBuilder(function, num_shots=configs.num_shots)
     dataset = builder.get_dataset(coverage_degree=1)
 
     # Create and run experiment
-    experiment = TaskVectorExperiment(dataset, model, configs)
-    results = experiment.run()
-
-    logger.info("Experiment results: %s", results)
-
+    experiment = TaskVectorExperiment(dataset=dataset, model_path=args.model_dir, configs=configs)
+    experiment.run()
 
 if __name__ == "__main__":
     main()
-
