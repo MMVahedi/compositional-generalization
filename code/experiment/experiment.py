@@ -138,6 +138,10 @@ class TaskVectorExperiment:
 
     def run(self) -> Dict[str, Any]:
         """Run the experiment: extract task vector, evaluate on queries, and report results."""
+        def _preview(text: str, max_len: int = 220) -> str:
+            one_line = " ".join(text.split())
+            return one_line if len(one_line) <= max_len else one_line[:max_len] + " ..."
+
         logging.info("="*60)
         logging.info("Starting experiment run")
         logging.info("="*60)
@@ -174,12 +178,18 @@ class TaskVectorExperiment:
                 pad_token_id=self.tokenizer.eos_token_id,
             )
             response = self.tokenizer.decode(response[0], skip_special_tokens=True)
+            injected_is_correct = self.evaluator.is_correct(prompt.prompt, response)
 
             if idx % 10 == 0:
-                logging.info(f"[Injected sample {idx}] Prompt:\n{prompt.prompt.build()}")
-                logging.info(f"[Injected sample {idx}] Output:\n{response}")
+                logging.info(
+                    f"[Injected #{idx}] "
+                    f"expected='{_preview(prompt.prompt.get_correct_result())}' | "
+                    f"ok={injected_is_correct}\n"
+                    f"prompt: {_preview(prompt.prompt.build())}\n"
+                    f"output: {_preview(response)}"
+                )
 
-            if self.evaluator.is_correct(prompt.prompt, response):
+            if injected_is_correct:
                 correct_injected += 1
             
             if (idx + 1) % 50 == 0:
@@ -204,12 +214,18 @@ class TaskVectorExperiment:
                 pad_token_id=self.tokenizer.eos_token_id,
             )
             baseline = self.tokenizer.decode(out[0], skip_special_tokens=True)
+            baseline_is_correct = self.evaluator.is_correct(prompt.prompt, baseline)
 
             if idx % 10 == 0:
-                logging.info(f"[Baseline sample {idx}] Prompt:\n{prompt.prompt.build()}")
-                logging.info(f"[Baseline sample {idx}] Output:\n{baseline}")
+                logging.info(
+                    f"[Baseline #{idx}] "
+                    f"expected='{_preview(prompt.prompt.get_correct_result())}' | "
+                    f"ok={baseline_is_correct}\n"
+                    f"prompt: {_preview(prompt.prompt.build())}\n"
+                    f"output: {_preview(baseline)}"
+                )
             
-            if self.evaluator.is_correct(prompt.prompt, baseline):
+            if baseline_is_correct:
                 correct_baseline += 1
             
             if (idx + 1) % 50 == 0:
