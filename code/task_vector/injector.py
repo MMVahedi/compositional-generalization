@@ -175,7 +175,7 @@ class Injector:
                 handles.append(h)
             
             logging.debug("Running forward pass with injected vectors")
-            result = model(
+            result = model.generate(
                 input_ids=prompt.input_ids,
                 attention_mask=prompt.attention_mask,
                 **forward_kwargs,

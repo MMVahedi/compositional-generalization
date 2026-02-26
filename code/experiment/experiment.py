@@ -165,8 +165,15 @@ class TaskVectorExperiment:
                 model=self.model,
                 prompt=prompt,
                 inject_position=sep_pos,
-                use_cache=False
+                max_new_tokens=self.configs.max_tokens,
+                do_sample=False,
+                temperature=self.configs.temperature,
+                top_k=self.configs.top_k,
+                top_p=self.configs.top_p,
+                eos_token_id=self.tokenizer.eos_token_id,
+                pad_token_id=self.tokenizer.eos_token_id,
             )
+            response = self.tokenizer.decode(response[0], skip_special_tokens=True)
             if self.evaluator.is_correct(prompt.prompt, response):
                 correct_injected += 1
             
