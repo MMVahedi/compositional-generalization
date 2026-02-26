@@ -5,7 +5,7 @@ from typing import Optional, Sequence, Union
 import torch
 
 class Config:
-    def __init__(self, max_tokens, block_idx, alpha, average_separators, normalize, system_prompt, temperature, top_k, top_p, num_shots, sep):
+    def __init__(self, max_tokens, block_idx, alpha, average_separators, normalize, system_prompt, temperature, top_k, top_p, num_shots, sep, debug=False):
         self.max_tokens = max_tokens
         self.block_idx = block_idx
         self.alpha = alpha
@@ -17,6 +17,7 @@ class Config:
         self.top_p = top_p
         self.num_shots = num_shots
         self.sep = sep
+        self.debug = debug
 
     @staticmethod
     def load_config(config_path: str) -> "Config":
@@ -36,7 +37,8 @@ class Config:
             top_k=config['top_k'],
             top_p=config['top_p'],
             num_shots=config.get('num_shots'),
-            sep=config.get('sep')
+            sep=config.get('sep'),
+            debug=config.get('debug', False),
         )
 
 @dataclass

@@ -181,7 +181,7 @@ class TaskVectorExperiment:
             injected_is_correct = self.evaluator.is_correct(prompt.prompt, response)
 
             if idx % 10 == 0:
-                logging.info(
+                logging.debug(
                     f"[Injected #{idx}] "
                     f"expected='{_preview(prompt.prompt.get_correct_result())}' | "
                     f"ok={injected_is_correct}\n"
@@ -217,7 +217,7 @@ class TaskVectorExperiment:
             baseline_is_correct = self.evaluator.is_correct(prompt.prompt, baseline)
 
             if idx % 10 == 0:
-                logging.info(
+                logging.debug(
                     f"[Baseline #{idx}] "
                     f"expected='{_preview(prompt.prompt.get_correct_result())}' | "
                     f"ok={baseline_is_correct}\n"

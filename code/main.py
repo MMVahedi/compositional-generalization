@@ -36,6 +36,8 @@ def main():
     # Load configs
     logging.info(f"Loading configuration from {args.config}")
     configs = Config.load_config(args.config)
+    logging.getLogger().setLevel(logging.DEBUG if configs.debug else logging.INFO)
+    logging.info(f"Debug logging is {'enabled' if configs.debug else 'disabled'}")
     logging.info(f"Configuration loaded: num_shots={configs.num_shots}, alpha={configs.alpha}, block_idx={configs.block_idx}")
 
     prepare_environment(args.model_dir, local_files_only=True)
