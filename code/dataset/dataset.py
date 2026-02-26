@@ -1,4 +1,5 @@
 from typing import List
+import logging
 import json
 import itertools
 from dataset.query import Query
@@ -68,12 +69,14 @@ class DatasetBuilder:
         from the remaining demos, and for each combination, generate all permutations
         to account for different orders.
         """
+        logging.info(f"Building queries with num_shots={self.num_shots} from {len(self.demos)} demos")
         queries = []
         for query_index in range(len(self.demos)):
             query_demo = self.demos[query_index]
             remaining = [d for i, d in enumerate(self.demos) if i != query_index]
             
             if len(remaining) < self.num_shots:
+                logging.warning(f"Not enough demos for query_index {query_index}: need {self.num_shots}, have {len(remaining)}")
                 continue  # Not enough demos for demonstrations
             
             # Generate all combinations of num_shots from remaining
@@ -81,10 +84,16 @@ class DatasetBuilder:
                 # Generate all permutations of each combination
                 for perm in itertools.permutations(combo):
                     queries.append(Query(list(perm), query_demo))
+            
+            if (query_index + 1) % 100 == 0:
+                logging.debug(f"Generated queries for {query_index + 1}/{len(self.demos)} query demos (total: {len(queries)} queries)")
         
+        logging.info(f"Built {len(queries)} total queries")
         return queries
 
     def get_dataset(self, coverage_degree: int) -> Dataset:
         """Return a Dataset object containing all queries that have the specified coverage degree."""
+        logging.info(f"Filtering queries for coverage_degree={coverage_degree}")
         filtered_queries = [q for q in self.queries if q.coverage_degree == coverage_degree]
+        logging.info(f"Found {len(filtered_queries)}/{len(self.queries)} queries with coverage_degree={coverage_degree}")
         return Dataset(filtered_queries, coverage_degree)

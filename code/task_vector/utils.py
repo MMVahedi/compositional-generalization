@@ -1,4 +1,5 @@
 import json
+import logging
 from dataclasses import dataclass
 from typing import Optional, Sequence, Union
 import torch
@@ -19,9 +20,11 @@ class Config:
 
     @staticmethod
     def load_config(config_path: str) -> "Config":
+        logging.debug(f"Loading configuration from {config_path}")
         with open(config_path, 'r') as f:
             config = json.load(f)
-
+        
+        logging.debug(f"Config keys found: {list(config.keys())}")
         return Config(
             max_tokens=config['max_tokens'],
             block_idx=config['block_idx'],

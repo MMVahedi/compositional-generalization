@@ -1,5 +1,6 @@
 import os
 import argparse
+import logging
 
 from task_vector.utils import Config
 from dataset.dataset import DatasetBuilder
@@ -15,22 +16,32 @@ def parse_args() -> argparse.Namespace:
 
 
 def prepare_environment(model_source: str, local_files_only: bool = True) -> None:
+    logging.info("Preparing environment...")
     if local_files_only:
+        logging.info("Setting offline mode for transformers")
         os.environ["TRANSFORMERS_OFFLINE"] = "1"
         os.environ["HF_DATASETS_OFFLINE"] = "1"
         if not os.path.isdir(model_source):
             raise RuntimeError(f"Model dir {model_source} does not exist or is not a directory.")
+    logging.info(f"Environment prepared. Model directory: {model_source}")
 
 
 def main():
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    
+    logging.info("Starting compositional generalization experiment")
     args = parse_args()
+    logging.info(f"Arguments: model_dir={args.model_dir}, config={args.config}, degree={args.degree}")
 
     # Load configs
+    logging.info(f"Loading configuration from {args.config}")
     configs = Config.load_config(args.config)
+    logging.info(f"Configuration loaded: num_shots={configs.num_shots}, alpha={configs.alpha}, block_idx={configs.block_idx}")
 
     prepare_environment(args.model_dir, local_files_only=True)
 
     # Create Random Function 
+    logging.info("Generating two-hop function dataset")
     x1 = range(1, 10)
     x2 = range(1, 10)
     x3 = range(1, 10)
@@ -44,13 +55,21 @@ def main():
         outputs,
         seed=42
     )
+    logging.info(f"Generated function with {len(function)} demo pairs")
 
+    logging.info(f"Building dataset with num_shots={configs.num_shots}")
     builder = DatasetBuilder(function, num_shots=configs.num_shots)
+    logging.info(f"Total queries generated: {len(builder.queries)}")
+    
     dataset = builder.get_dataset(coverage_degree=args.degree)
+    logging.info(f"Filtered dataset for coverage_degree={args.degree}: {len(dataset)} queries")
 
     # Create and run experiment
+    logging.info("Initializing experiment...")
     experiment = TaskVectorExperiment(dataset=dataset, model_path=args.model_dir, configs=configs)
+    logging.info("Running experiment...")
     experiment.run()
+    logging.info("Experiment completed successfully")
 
 if __name__ == "__main__":
     main()

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-
+import logging
 import torch
 import torch.nn as nn
 from task_vector.task_vector_prompt import TaskVectorPrompt
@@ -17,6 +17,7 @@ class TaskVectorExtractor:
         if not prompt.separator_positions:
             raise ValueError("No separator occurrences found. Check your separator_text and prompt template.")
 
+        logging.debug(f"Extracting task vector with {len(prompt.separator_positions)} separator positions")
         outputs = self.model(
             input_ids=prompt.input_ids,
             attention_mask=prompt.attention_mask,
@@ -25,6 +26,7 @@ class TaskVectorExtractor:
         )
 
         hidden_states = outputs.hidden_states
+        logging.debug(f"Got hidden states from {len(hidden_states)} layers")
 
         # Normalize layer indices into a list for uniform handling
         cfg_layer_idx = self.cfg.layer_idx
@@ -36,8 +38,10 @@ class TaskVectorExtractor:
         # choose separator token positions once (same for all layers)
         if self.cfg.average_separators:
             positions = prompt.separator_positions
+            logging.debug(f"Using all {len(positions)} separator positions (average_separators=True)")
         else:
             positions = [prompt.separator_positions[-1]]
+            logging.debug(f"Using last separator position: {positions[0]} (average_separators=False)")
 
         per_layer_vecs = []
         resolved_layers = []
@@ -56,6 +60,8 @@ class TaskVectorExtractor:
             final_vec = per_layer_vecs[0].detach()
         else:
             final_vec = torch.stack(per_layer_vecs, dim=0).detach()  # [n_layers, d_model]
+        
+        logging.debug(f"Extracted task vector with shape: {final_vec.shape}")
 
         return TaskVector(
             vector=final_vec,

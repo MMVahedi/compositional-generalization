@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from typing import Protocol
 
 import torch
@@ -123,24 +124,29 @@ class QwenBackend:
 # =========================
 
 class Injector:
-    def __init__(self, backend: InjectorBackend, model: nn.Module, task_vector: TaskVector, cfg: TaskVectorConfig):
+    def __init__(self, backend: InjectorBackend, task_vector: TaskVector, cfg: TaskVectorConfig):
+        logging.debug(f"Initializing Injector with backend={backend.__class__.__name__}")
         self.backend = backend
-        self.model = model
         self.task_vector = task_vector
         self.cfg = cfg
+        logging.debug(f"Injector config: alpha={cfg.alpha}, layer_idx={cfg.layer_idx}")
 
     def inject_and_forward(
         self,
+        model: nn.Module,
         prompt: TaskVectorPrompt,
         inject_position: int,
         **forward_kwargs,
     ):
+        logging.debug(f"Starting injection at position={inject_position}")
         # Support multiple layer indices and per-layer vectors.
         # Normalize layer indices and vectors to lists of same length.
         if isinstance(self.task_vector.layer_idx, int):
             layer_idxs = [self.task_vector.layer_idx]
         else:
             layer_idxs = list(self.task_vector.layer_idx)
+        
+        logging.debug(f"Injecting into {len(layer_idxs)} layer(s): {layer_idxs}")
 
         tv = self.task_vector.vector
         per_layer_vecs = []
@@ -156,22 +162,27 @@ class Injector:
 
         handles = []
         try:
+            logging.debug(f"Installing {len(layer_idxs)} hook(s) for injection")
             for li, v in zip(layer_idxs, per_layer_vecs):
                 add_vec = v.to(self.cfg.device)
                 h = self.backend.install_hook(
-                    model=self.model,
+                    model=model,
                     layer_idx=li,
                     position=inject_position,
                     add_vector=add_vec,
                     alpha=self.cfg.alpha,
                 )
                 handles.append(h)
-
-            return self.model(
+            
+            logging.debug("Running forward pass with injected vectors")
+            result = model(
                 input_ids=prompt.input_ids,
                 attention_mask=prompt.attention_mask,
                 **forward_kwargs,
             )
+            logging.debug("Forward pass completed")
+            return result
         finally:
+            logging.debug(f"Removing {len(handles)} hook(s)")
             for h in handles:
                 h.remove()
