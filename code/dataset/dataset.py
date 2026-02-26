@@ -60,17 +60,14 @@ class DatasetBuilder:
         self.demos = function.demo_pairs
         self.num_shots = num_shots
         self.allow_reuse = allow_reuse
-        if self.allow_reuse:
-            self.queries = self._build_all_queries_with_reuse()
-        else:
-            self.queries = self._build_all_queries_without_reuse()
+        self.queries: List[Query] = []
+        self.last_generated_count: int = 0
+        self.last_filtered_count: int = 0
 
-    def _build_all_queries_with_reuse(self) -> List[Query]:
-        """Generate all possible Query objects (original behavior, demos can be reused)."""
+    def _iter_queries_with_reuse(self):
+        """Yield all possible Query objects (original behavior, demos can be reused)."""
         import itertools
 
-        logging.info(f"Building queries WITH reuse, num_shots={self.num_shots}, demos={len(self.demos)}")
-        queries = []
         for query_index in range(len(self.demos)):
             query_demo = self.demos[query_index]
             remaining = [d for i, d in enumerate(self.demos) if i != query_index]
@@ -79,8 +76,31 @@ class DatasetBuilder:
                 continue
 
             for combo in itertools.combinations(remaining, self.num_shots):
-                queries.append(Query(list(combo), query_demo))
+                yield Query(list(combo), query_demo)
 
+    def _iter_queries_without_reuse(self):
+        """Yield Query objects without reusing demonstrations across queries."""
+        if self.num_shots <= 0:
+            raise ValueError("num_shots must be greater than 0")
+
+        block_size = self.num_shots + 1
+        full_blocks = len(self.demos) // block_size
+
+        for block_idx in range(full_blocks):
+            start = block_idx * block_size
+            block = self.demos[start:start + block_size]
+            demonstrations = block[:self.num_shots]
+            query_demo = block[self.num_shots]
+            yield Query(demonstrations, query_demo)
+
+        unused = len(self.demos) - full_blocks * block_size
+        if unused > 0:
+            logging.info(f"Skipped {unused} trailing demos that could not form a full query block")
+
+    def _build_all_queries_with_reuse(self) -> List[Query]:
+        """Generate all possible Query objects (original behavior, demos can be reused)."""
+        logging.info(f"Building queries WITH reuse, num_shots={self.num_shots}, demos={len(self.demos)}")
+        queries = list(self._iter_queries_with_reuse())
         logging.info(f"Built {len(queries)} total queries (with reuse)")
         return queries
 
@@ -92,30 +112,32 @@ class DatasetBuilder:
         - last demo is used as query_demo
         """
         logging.info(f"Building queries with num_shots={self.num_shots} from {len(self.demos)} demos")
-        if self.num_shots <= 0:
-            raise ValueError("num_shots must be greater than 0")
-
-        queries = []
-        block_size = self.num_shots + 1
-        full_blocks = len(self.demos) // block_size
-
-        for block_idx in range(full_blocks):
-            start = block_idx * block_size
-            block = self.demos[start:start + block_size]
-            demonstrations = block[:self.num_shots]
-            query_demo = block[self.num_shots]
-            queries.append(Query(demonstrations, query_demo))
-
-        unused = len(self.demos) - full_blocks * block_size
-        if unused > 0:
-            logging.info(f"Skipped {unused} trailing demos that could not form a full query block")
+        queries = list(self._iter_queries_without_reuse())
         
         logging.info(f"Built {len(queries)} total queries (without reuse)")
         return queries
 
     def get_dataset(self, coverage_degree: int) -> Dataset:
-        """Return a Dataset object containing all queries that have the specified coverage degree."""
-        logging.info(f"Filtering queries for coverage_degree={coverage_degree}")
-        filtered_queries = [q for q in self.queries if q.coverage_degree == coverage_degree]
-        logging.info(f"Found {len(filtered_queries)}/{len(self.queries)} queries with coverage_degree={coverage_degree}")
+        """Build and return only queries that match coverage_degree.
+
+        Queries are generated lazily and filtered immediately to reduce peak memory usage.
+        """
+        logging.info(f"Building and filtering queries for coverage_degree={coverage_degree}")
+
+        query_iter = self._iter_queries_with_reuse() if self.allow_reuse else self._iter_queries_without_reuse()
+
+        filtered_queries: List[Query] = []
+        generated_count = 0
+        for query in query_iter:
+            generated_count += 1
+            if query.coverage_degree == coverage_degree:
+                filtered_queries.append(query)
+
+        self.last_generated_count = generated_count
+        self.last_filtered_count = len(filtered_queries)
+        self.queries = filtered_queries
+
+        logging.info(
+            f"Found {self.last_filtered_count}/{self.last_generated_count} queries with coverage_degree={coverage_degree}"
+        )
         return Dataset(filtered_queries, coverage_degree)

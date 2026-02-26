@@ -61,9 +61,9 @@ def main():
 
     logging.info(f"Building dataset with num_shots={configs.num_shots}")
     builder = DatasetBuilder(function, num_shots=configs.num_shots)
-    logging.info(f"Total queries generated: {len(builder.queries)}")
     
     dataset = builder.get_dataset(coverage_degree=args.degree)
+    logging.info(f"Generated queries scanned: {builder.last_generated_count}")
     logging.info(f"Filtered dataset for coverage_degree={args.degree}: {len(dataset)} queries")
 
     # Create and run experiment
