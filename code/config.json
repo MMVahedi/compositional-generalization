@@ -9,5 +9,5 @@
   "top_k": 1,
   "top_p": 1.0,
   "num_shots": 3,
-  "sep": "->"
+  "sep": " ->"
 }
