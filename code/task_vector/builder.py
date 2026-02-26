@@ -1,27 +1,26 @@
 from typing import List
 import torch
 
-from icl_task_vectors import TaskVectorExtractor, TaskVector
-from task_vector_pkg.query import Query
-
+from task_vector.task_vector_prompt import TaskVectorPrompt
+from task_vector.utils import Config, TaskVector
+from task_vector.extractor import TaskVectorExtractor
 
 class TaskVectorBuilder:
     """Builder for creating task vectors from a dataset of queries."""
 
-    def __init__(self, model, cfg, prompt_builder):
+    def __init__(self, prompts: List[TaskVectorPrompt], model, cfg: Config):
         self.model = model
+        self.prompts = prompts
         self.cfg = cfg
-        self.prompt_builder = prompt_builder
 
-    def build_task_vector(self, queries: List[Query], sep: str, system_prompt: str) -> TaskVector:
+    def build_task_vector(self) -> TaskVector:
         """Extract and average task vectors from a list of queries."""
+        sep = self.cfg.sep
         extractor = TaskVectorExtractor(self.model, self.cfg)
         task_vectors = []
         
-        for query in queries:
-            fewshot_text = query.build_prompt(sep, system_prompt)
-            fewshot_enc = self.prompt_builder.encode(fewshot_text, device=self.cfg.device)
-            task_vec = extractor.extract(fewshot_enc, separator_text=sep)
+        for prompt in self.prompts:
+            task_vec = extractor.extract(prompt, separator_text=sep)
             task_vectors.append(task_vec)
 
         if not task_vectors:

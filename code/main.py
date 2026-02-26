@@ -1,46 +1,15 @@
 import os
 import argparse
-import logging
 
-from code.dataset.demonstration_pair import DemoPair
-import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer
-
-from icl_task_vectors import PromptBuilder
-
-from task_vector_pkg.config import Config, load_config
-from task_vector_pkg.demos import get_demo_pairs
-from task_vector_pkg.dataset import DatasetBuilder
-from task_vector_pkg.experiment import Experiment
-
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO, format="%(message)s")
-
+from task_vector.utils import Config
+from dataset.dataset import DatasetBuilder
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
     p.add_argument("--model-dir", type=str, required=True, help="Local directory containing pretrained model/tokenizer")
     p.add_argument("--config", type=str, required=True, help="Path to config file")
-    p.add_argument("--demos-path", type=str, required=True, help="Path to demos JSON file")
-    p.add_argument("--sep", type=str, default="->", help="Separator token for prompts (default: '->')")
+    p.add_argument("--degree", type=int, required=True, help="Degree of coverage for dataset construction")
     return p.parse_args()
-
-
-def load_configs(args: argparse.Namespace) -> Config:
-    config_dict = load_config(args.config)
-    return Config(
-        max_tokens=config_dict['max_tokens'],
-        block_idx=config_dict['block_idx'],
-        alpha=config_dict['alpha'],
-        average_separators=config_dict['average_separators'],
-        normalize=config_dict['normalize'],
-        system_prompt=config_dict['system_prompt'],
-        temperature=config_dict['temperature'],
-        top_k=config_dict['top_k'],
-        top_p=config_dict['top_p'],
-        num_shots=config_dict.get('num_shots', 3),
-        sep=args.sep
-    )
 
 
 def prepare_environment(model_source: str, local_files_only: bool = True) -> None:
@@ -51,39 +20,13 @@ def prepare_environment(model_source: str, local_files_only: bool = True) -> Non
             raise RuntimeError(f"Model dir {model_source} does not exist or is not a directory.")
 
 
-def load_model_and_tokenizer(model_source: str, device: str, local_files_only: bool = True):
-    logger.info("Loading tokenizer and model from %s", model_source)
-    tokenizer = AutoTokenizer.from_pretrained(model_source, local_files_only=local_files_only)
-    model = AutoModelForCausalLM.from_pretrained(
-        model_source, local_files_only=local_files_only, dtype="float16", low_cpu_mem_usage=True
-    ).to(device)
-    model.eval()
-
-    # Some tokenizers (e.g. GPT-2) have no pad token; set it for generation convenience
-    if tokenizer.pad_token_id is None:
-        tokenizer.pad_token = tokenizer.eos_token
-
-    return model, tokenizer
-
-
 def main():
     args = parse_args()
 
     # Load configs
-    configs = load_configs(args)
+    configs = Config.load_config(args.config)
 
-    model_source = args.model_dir
-    local_files_only = True
-
-    prepare_environment(model_source, local_files_only=local_files_only)
-
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    torch.set_grad_enabled(False)
-    logger.info("Using device: %s (cuda_available=%s)", device, torch.cuda.is_available())
-
-    model, tokenizer = load_model_and_tokenizer(model_source, device, local_files_only=local_files_only)
-
-    prompt_builder = PromptBuilder(tokenizer, separator_text=configs.sep)
+    prepare_environment(args.model_dir, local_files_only=True)
 
     # Load demos
     get_demo_pairs(args.demos_path)
@@ -92,7 +35,7 @@ def main():
     dataset = builder.get_dataset(coverage_degree=1)
 
     # Create and run experiment
-    experiment = Experiment(dataset, model, configs, prompt_builder)
+    experiment = TaskVectorExperiment(dataset, model, configs)
     results = experiment.run()
 
     logger.info("Experiment results: %s", results)

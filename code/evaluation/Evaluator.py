@@ -6,14 +6,9 @@ from icl.prompt import FewShotPrompt, ZeroShotPrompt
 class ContainmentEvaluator:
     """Evaluates correctness by checking if response contains the expected result."""
 
-    def __init__(self, prompt: FewShotPrompt | ZeroShotPrompt, model_response: str):
-        self.prompt = prompt
-        self.correct_result = self.prompt.get_correct_result()
-        self.model_response = model_response
-
-    def is_correct(self) -> bool:
-        correct_result = self.correct_result.strip()
-        response_text = self.model_response.strip()
+    def is_correct(self, prompt: FewShotPrompt | ZeroShotPrompt, model_response: str) -> bool:
+        correct_result = prompt.get_correct_result().strip()
+        response_text = model_response.strip()
         return correct_result.lower() in response_text.lower()
 
 
