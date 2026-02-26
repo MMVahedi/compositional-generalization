@@ -49,9 +49,7 @@ def generate_two_hop_function(
     g = {}
     for b, x3 in product(intermediate_domain, x3_domain):
         g[(b, x3)] = random.choice(output_domain)
-    logging.debug(f"Second hop mapping created with {len(g)} entries}")
-
-    logging.debug(f"Second hop mapping created with {len(g)} entries}")
+    logging.debug(f"Second hop mapping created with {len(g)} entries")
 
     logging.debug("Creating demo pairs from two-hop composition")
     function_obj = Function()

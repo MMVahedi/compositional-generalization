@@ -42,12 +42,12 @@ def main():
 
     # Create Random Function 
     logging.info("Generating two-hop function dataset")
-    x1 = range(1, 10)
-    x2 = range(1, 10)
-    x3 = range(1, 10)
+    x1 = list(range(1, 4))
+    x2 = list(range(1, 4))
+    x3 = list(range(1, 4))
 
-    intermediate = range(1, 10)
-    outputs = range(1, 10)
+    intermediate = list(range(1, 4))
+    outputs = list(range(1, 4))
 
     function = generate_two_hop_function(
         x1, x2, x3,
