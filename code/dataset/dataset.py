@@ -149,7 +149,7 @@ class DatasetBuilder:
         generated_count = 0
         for query in query_iter:
             generated_count += 1
-            if generated_count % 1000 == 0:
+            if generated_count % 1000000 == 0:
                 remaining = max(self.total_possible_queries - generated_count, 0)
                 pct = (generated_count / self.total_possible_queries * 100) if self.total_possible_queries > 0 else 100.0
                 logging.info(
@@ -162,14 +162,6 @@ class DatasetBuilder:
         self.last_generated_count = generated_count
         self.last_filtered_count = len(filtered_queries)
         self.queries = filtered_queries
-
-        if generated_count % 1000 != 0:
-            remaining = max(self.total_possible_queries - generated_count, 0)
-            pct = (generated_count / self.total_possible_queries * 100) if self.total_possible_queries > 0 else 100.0
-            logging.info(
-                f"Generation progress: {generated_count}/{self.total_possible_queries} "
-                f"({pct:.2f}%), remaining={remaining}"
-            )
 
         logging.info(
             f"Found {self.last_filtered_count}/{self.last_generated_count} queries with coverage_degree={coverage_degree}"
