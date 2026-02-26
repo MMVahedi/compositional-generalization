@@ -5,8 +5,8 @@ from heapq import heappop, heappush
 from itertools import combinations
 from typing import Dict, List, Set, Tuple
 
-from code.coverage.demonstration_pair import DemoPair
-from task_vector_pkg.query import Query
+from dataset.demonstration_pair import DemoPair
+from dataset.query import Query
 
 
 Pair = Tuple[int, int]
