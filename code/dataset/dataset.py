@@ -1,6 +1,7 @@
 from typing import List
 import logging
 import json
+import math
 from dataset.query import Query
 from dataset.demonstration_pair import DemoPair
 from function.function import Function
@@ -63,6 +64,22 @@ class DatasetBuilder:
         self.queries: List[Query] = []
         self.last_generated_count: int = 0
         self.last_filtered_count: int = 0
+        self.total_possible_queries: int = 0
+
+    def _count_total_possible_queries(self) -> int:
+        n = len(self.demos)
+        k = self.num_shots
+
+        if k <= 0:
+            raise ValueError("num_shots must be greater than 0")
+
+        if self.allow_reuse:
+            if n - 1 < k:
+                return 0
+            return n * math.comb(n - 1, k)
+
+        block_size = k + 1
+        return n // block_size
 
     def _iter_queries_with_reuse(self):
         """Yield all possible Query objects (original behavior, demos can be reused)."""
@@ -123,6 +140,8 @@ class DatasetBuilder:
         Queries are generated lazily and filtered immediately to reduce peak memory usage.
         """
         logging.info(f"Building and filtering queries for coverage_degree={coverage_degree}")
+        self.total_possible_queries = self._count_total_possible_queries()
+        logging.info(f"Total possible queries: {self.total_possible_queries}")
 
         query_iter = self._iter_queries_with_reuse() if self.allow_reuse else self._iter_queries_without_reuse()
 
@@ -130,14 +149,27 @@ class DatasetBuilder:
         generated_count = 0
         for query in query_iter:
             generated_count += 1
-            if generated_count % 1000000 == 0:
-                logging.info(f"Generated queries so far: {generated_count}")
+            if generated_count % 1000 == 0:
+                remaining = max(self.total_possible_queries - generated_count, 0)
+                pct = (generated_count / self.total_possible_queries * 100) if self.total_possible_queries > 0 else 100.0
+                logging.info(
+                    f"Generation progress: {generated_count}/{self.total_possible_queries} "
+                    f"({pct:.2f}%), remaining={remaining}"
+                )
             if query.coverage_degree == coverage_degree:
                 filtered_queries.append(query)
 
         self.last_generated_count = generated_count
         self.last_filtered_count = len(filtered_queries)
         self.queries = filtered_queries
+
+        if generated_count % 1000 != 0:
+            remaining = max(self.total_possible_queries - generated_count, 0)
+            pct = (generated_count / self.total_possible_queries * 100) if self.total_possible_queries > 0 else 100.0
+            logging.info(
+                f"Generation progress: {generated_count}/{self.total_possible_queries} "
+                f"({pct:.2f}%), remaining={remaining}"
+            )
 
         logging.info(
             f"Found {self.last_filtered_count}/{self.last_generated_count} queries with coverage_degree={coverage_degree}"
