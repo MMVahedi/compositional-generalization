@@ -56,7 +56,7 @@ class Dataset:
 class DatasetBuilder:
     """Builder for creating all possible Query objects from a list of demo pairs."""
 
-    def __init__(self, function: Function, num_shots: int, allow_reuse: bool = False):
+    def __init__(self, function: Function, num_shots: int, allow_reuse: bool = True):
         self.demos = function.demo_pairs
         self.num_shots = num_shots
         self.allow_reuse = allow_reuse
