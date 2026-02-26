@@ -146,9 +146,9 @@ def max_coverage_degree_pair_substitution(train: List[TrainEx], test: Tuple[int,
 
 def convert_to_list(demo: DemoPair) -> List[TrainEx]:
     """Convert a DemoPair to a list of TrainEx tuples."""
-    input_list = list(map(int,demo.input.strip("()").split(",")))
-    input_list.append(int(demo.output))
-    return input_list
+    x1, x2, x3 = map(int, demo.input.strip("()").split(","))
+    y = int(demo.output)
+    return [(x1, x2, x3, y)]
 
 def max_coverage_degree_pair_substitution_wrapper(query: Query) -> int:
     """
@@ -161,5 +161,5 @@ def max_coverage_degree_pair_substitution_wrapper(query: Query) -> int:
     for d in demos:
         train.extend(convert_to_list(d))
     question = query.query_demo
-    test = list(map(int,question.input.strip("()").split(",")))
+    test = tuple(map(int, question.input.strip("()").split(",")))
     return max_coverage_degree_pair_substitution(train, test)
