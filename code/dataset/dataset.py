@@ -130,6 +130,8 @@ class DatasetBuilder:
         generated_count = 0
         for query in query_iter:
             generated_count += 1
+            if generated_count % 1000 == 0:
+                logging.info(f"Generated queries so far: {generated_count}")
             if query.coverage_degree == coverage_degree:
                 filtered_queries.append(query)
 
