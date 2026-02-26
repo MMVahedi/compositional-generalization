@@ -3,21 +3,22 @@ import logging
 import torch
 
 from task_vector.task_vector_prompt import TaskVectorPrompt
-from task_vector.utils import Config, TaskVector
+from task_vector.utils import TaskVectorConfig, TaskVector
 from task_vector.extractor import TaskVectorExtractor
 
 class TaskVectorBuilder:
     """Builder for creating task vectors from a dataset of queries."""
 
-    def __init__(self, prompts: List[TaskVectorPrompt], model, cfg: Config):
+    def __init__(self, prompts: List[TaskVectorPrompt], model, cfg: TaskVectorConfig, separator_text: str):
         self.model = model
         self.prompts = prompts
         self.cfg = cfg
+        self.separator_text = separator_text
 
     def build_task_vector(self) -> TaskVector:
         """Extract and average task vectors from a list of queries."""
         logging.info("Starting task vector extraction")
-        sep = self.cfg.sep
+        sep = self.separator_text
         extractor = TaskVectorExtractor(self.model, self.cfg)
         task_vectors = []
         

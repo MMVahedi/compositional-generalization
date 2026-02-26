@@ -50,7 +50,12 @@ class TaskVectorExperiment:
         logging.info(f"Created {len(self.task_vector_prompts)} task vector prompts")
         
         logging.info("Building task vector from prompts")
-        task_vector_builder = TaskVectorBuilder(self.task_vector_prompts, self.model, self.task_vector_config)
+        task_vector_builder = TaskVectorBuilder(
+            self.task_vector_prompts,
+            self.model,
+            self.task_vector_config,
+            self.configs.sep,
+        )
         self.task_vector = task_vector_builder.build_task_vector()
         logging.info(f"Task vector built with shape: {self.task_vector.vector.shape}")
         
