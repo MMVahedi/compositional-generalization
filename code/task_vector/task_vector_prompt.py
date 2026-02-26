@@ -10,10 +10,10 @@ class TaskVectorPrompt:
     We define the separator position as the *last token* of the separator subsequence.
     """
 
-    def __init__(self, prompt: FewShotPrompt, tokenizer, separator_text: str):
+    def __init__(self, prompt: FewShotPrompt, tokenizer):
         self.prompt = prompt
         self.tokenizer = tokenizer
-        self.sep_token_ids = tokenizer.encode(separator_text, add_special_tokens=False)
+        self.sep_token_ids = tokenizer.encode(prompt.separator, add_special_tokens=False)
         if len(self.sep_token_ids) == 0:
             raise ValueError("separator_text produced 0 tokens; choose a different separator.")
         self.input_ids, self.attention_mask, self.separator_positions = self._encode(self.prompt.build())
